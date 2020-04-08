@@ -20,8 +20,8 @@ class  Spotlight_Loader {
 	 */
 	public function __construct() {
 
-		// Enqueue style and script.
-		add_action( 'init', array( $this, 'register_script' ) );
+		// Enqueue style and script for frontend.
+		add_action( 'wp_enqueue_scripts', array( $this, 'register_script' ) );
 
 		// Load frontend.
 		add_action( 'wp_footer', array( $this, 'load_view' ) );

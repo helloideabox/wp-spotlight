@@ -1,0 +1,37 @@
+.spl-modal-header-navigation{
+	min-height: 48px;
+	height: 48px;
+	width: 100%;
+	background-color: rgb(252, 93, 125);
+	color: white;
+	position: sticky;
+	top: 0;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	z-index: 3;
+}
+
+.spl-navigation{
+	cursor: pointer;
+	font-weight: 500;
+	color: white;
+	border-radius: 999px;
+	padding: 2px 15px 2px 8px;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	font-size: 13px;
+	text-transform: capitalize;
+	text-decoration: none;
+
+	.spl-navigation-icon{
+		margin-right: 1px;
+		fill: white;
+	}
+}
+
+.spl-active{
+	font-weight: bold;
+	background-color: #e74868;
+}

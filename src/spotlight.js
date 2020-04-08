@@ -1,4 +1,7 @@
 import './spotlight.scss';
+import ModalHeader from './component/ModalHeader/modalHeader';
+import ModalPost from './component/modalBody/modalPost';
+import ModalForm from './component/modalBody/modalForm';
 import { CSSTransition } from 'react-transition-group';
 
 /**
@@ -20,9 +23,15 @@ class Spotlight extends Component {
 
 		this.state = {
 			isModalShow: false,
+			isAnswer: true,
 		}
 
 		this.showModal = this.showModal.bind( this );
+		this.handleClick = this.handleClick.bind( this );
+	}
+
+	handleClick( bool ) {
+		this.setState( { isAnswer: bool } );
 	}
 
 	showModal() {
@@ -33,6 +42,45 @@ class Spotlight extends Component {
 		console.log( this.state );
 		return(
 			<Fragment>
+				<CSSTransition
+					in={ this.state.isModalShow }
+					unmountOnExit
+					timeout={50}
+					classNames="modal-background"
+				>
+					<div className="spl-modal-container-background"></div>
+				</CSSTransition>
+				<CSSTransition
+					in={ this.state.isModalShow }
+					unmountOnExit
+					timeout={300}
+					classNames="modal"
+				>
+					<div className="spl-modal-container">
+						<header className="spl-header-wrap">
+							<ModalHeader onClick={ this.handleClick } />
+							<div className={ this.state.isAnswer? "spl-heading-post-container" : "spl-heading-form-container"}>
+								{
+									this.state.isAnswer?
+									<div>
+										<h2 className="spl-post-heading">Instant Answers</h2>
+									</div>
+									:
+									<div></div>
+								}
+							</div>
+						</header>
+						<main className="spl-main-container">
+						{
+							this.state.isAnswer?
+							<ModalPost />
+							:
+							<ModalForm />
+						}
+						</main>
+					</div>
+				</CSSTransition>
+
 				<div className="spl-button-container">
 					<CSSTransition
 						in={ this.state.isModalShow }
