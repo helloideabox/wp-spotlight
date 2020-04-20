@@ -21,6 +21,7 @@ class ModalPost extends Component{
 
 		this.state = {
 			posts:[],
+			isPostFetch: false,
 		}
 		this.post_types = [ 'post' ];
 
@@ -38,7 +39,6 @@ class ModalPost extends Component{
 
 		// To trim the last '&' in the string.
 		query = query.substring( 0, query.length-1 );
-		console.log( query );
 
 		fetch( `${siteName}/wp-json/spotlight/v1/posts/?${query}` )
 			.then( response => response.json() )
@@ -46,14 +46,15 @@ class ModalPost extends Component{
 
 				let {posts} = this.state;
 				posts.push( ...data );
-				this.setState({ posts });
+				this.setState( { posts } );
+				this.setState( { isPostFetch: true } )
 
 				// Passing props to parent and updating it.
 				if( this.props.posts.length == 0 ) {
 					this.props.posts.push( ...data );
 				} else {
 					data.map( value => {
-						if( this.props.posts.every( index => index.title != value.title ) ) {
+						if( this.props.posts.every( val => val.title != value.title ) ) {
 							this.props.posts.push( value );
 						}
 					} );
@@ -66,10 +67,10 @@ class ModalPost extends Component{
 	}
 
 
-	handleSinglePost( index ) {
+	handleSinglePost( index, bool ) {
 
 		// Updating the props to parent.
-		this.props.onClick( index );
+		this.props.onClick( index, bool );
 	}
 
 
@@ -80,6 +81,9 @@ class ModalPost extends Component{
 				<ul className="spl-modal-posts-lists">
 					<TransitionGroup className="spl-modal-posts-transition" component={null}>
 						{
+							this.state.posts.length == 0 && this.state.isPostFetch?
+							<li className="spl-modal-posts-lists-none">{ __( 'No post created till now.' ) }</li>
+							:
 							Object.keys( this.state.posts ).map( ( index ) => {
 								return(
 									<CSSTransition
@@ -89,7 +93,7 @@ class ModalPost extends Component{
 										enter={true}
 									>
 									<li className="spl-single-post-container" key={ index } style={{ 'transition-delay': `${(parseInt(index)+1) * 150}ms` }}>
-										<a className="spl-single-post" onClick={ () => this.handleSinglePost( index ) }>
+										<a className="spl-single-post" onClick={ () => this.handleSinglePost( index, true ) }>
 											<h2 className="spl-single-post-heading">
 												{ __( this.state.posts[index].title ) }
 											</h2>
@@ -106,7 +110,7 @@ class ModalPost extends Component{
 				</ul>
 
 				<CSSTransition
-					in={ ! Boolean(this.state.posts.length) }
+					in={ ! this.state.isPostFetch }
 					unmountOnExit
 					timeout={150}
 					classNames="loading"

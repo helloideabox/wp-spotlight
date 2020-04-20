@@ -42,6 +42,7 @@ class Spotlight extends Component {
 		this.handleFocus = this.handleFocus.bind( this );
 		this.handleBlur = this.handleBlur.bind( this );
 		this.handlePost = this.handlePost.bind( this );
+		this.handleClose = this.handleClose.bind( this );
 	}
 
 	componentDidUpdate( prevProps, prevState ) {
@@ -79,9 +80,13 @@ class Spotlight extends Component {
 		}
 	}
 
-	handlePost( index ) {
+	handlePost( index, bool ) {
 		this.setState( { singlePostIndex: index } );
-		this.setState( { isSinglePostOpen: true } );
+		this.setState( { isSinglePostOpen: bool } );
+	}
+
+	handleClose( bool ) {
+		this.setState( { isSinglePostOpen: bool } );
 	}
 
 	render() {
@@ -104,7 +109,7 @@ class Spotlight extends Component {
 					classNames="modal"
 				>
 					<div className="spl-modal-container">
-						<div className="spl-modal-scroll-container">
+						<div className={ "spl-modal-scroll-container " + ( this.state.isSinglePostOpen? 'overflow' : null )}>
 							<ModalHeader onClick={ this.handleClick } isAnswer={ this.state.isAnswer } />
 
 							<div className={ this.state.isAnswer? "spl-heading-post-container" : "spl-heading-form-container"}>
@@ -157,7 +162,10 @@ class Spotlight extends Component {
 						>
 							<div className="spl-modal-single-post-container">
 								{ this.state.posts.length > 0?
-									<ModalSinglePost content={ parse( __( this.state.posts[this.state.singlePostIndex].content) ) }/>
+									<ModalSinglePost 
+										content={ parse( __( this.state.posts[this.state.singlePostIndex].content) ) }
+										onClick={ this.handleClose }
+									/>
 									:
 									null	
 								}

@@ -1,0 +1,221 @@
+.spl-single-post-main-container{
+	background-color: white;
+	border-radius: 4px;
+	position: relative;
+	display: flex;
+	height: 100%;
+
+	.spl-single-post-close{
+		position: absolute;
+		right: 23px;
+		top: 10px;
+		z-index: 4;
+
+		.spl-single-post-close-button{
+			display: block;
+			cursor: pointer;
+			position: relative;
+			outline: none;
+			height: 32px;
+			width: 32px;
+			padding: 2px 6px;
+			color: rgb(180, 192, 202);
+			transition: all 300ms ease 0s;
+			background-color: white;
+			border-radius: 50%;
+
+			span{
+				display: block;
+				height: 20px;
+				width: 20px;
+			}
+
+			svg{
+				width: 100%;
+				height: 100%;
+				fill: rgb(180, 192, 202);
+
+				&:hover{
+					fill:black;
+				}
+			}
+		}
+	}
+
+	.spl-single-post-wrapper{
+		display: flex;
+		flex-direction: column;
+		flex: 1;
+
+		.spl-single-post-content{
+			flex: 1;
+			min-height: 0px;
+
+			.spl-single-post-content-fader{
+				position: absolute;
+				pointer-events: none;
+				right: 12px;
+				top: 0;
+				left: 0;
+				height: 38px;
+				z-index: 3;
+				border-radius: 4px;
+				background: linear-gradient(white 0%, white 30%, rgba(255, 255, 255, 0));
+
+			}
+
+			.spl-single-post-content-scrollable{
+				padding: 20px;
+				height: 100%;
+				width: 100%;	
+				overflow-y: auto;
+				position: relative;
+				overflow-x: hidden;
+				overscroll-behavior: contain;
+
+				article{
+					padding: 20px 10px 20px;
+				}
+			}
+		}
+
+		.spl-single-post-review-conatiner{
+			flex: 1;
+			max-height: 60px;
+			width: 100%;
+			display: flex;
+			align-items: center;
+			border-bottom-left-radius: 4px;
+			border-bottom-right-radius: 4px;
+			padding: 0px 20px;
+			position: relative;
+			z-index: 1;
+			background-color: white;
+			box-shadow: 0px -2px 15px rgba(165, 178, 189, 0.5);
+			justify-content: center;
+
+			.spl-single-post-review-content{
+				display: flex;
+				width: 100%;
+				align-items: center;
+
+				.spl-single-post-review-text{
+					margin: 0;
+					padding: 0;
+					color: rgb(57, 73, 86);
+					font-size: 13px;
+					width: 100%;
+				}
+
+				.spl-single-post-review-reaction{
+					display: flex;
+				
+					.spl-single-post-reaction-button{
+						width: 28px;
+						height: 28px;
+						padding: 0;
+						box-shadow: rgba(193, 203, 212, 0.5) 0px 3px 6px 0px;
+						position: relative;
+						user-select: none;
+						border-radius: 50%;
+						transition: all 200ms ease-in-out 0s;
+						cursor: pointer;
+						outline: none;
+						margin: 0;
+						background-color: white;
+
+						&:hover{
+							box-shadow: rgba(193, 203, 212, 0.5) 0px 4px 7px 0px;
+							transform: scale(1.3);
+							z-index: 1;
+							outline: none;
+						}
+
+						span{
+							display: block;
+							width: 100%;
+							height: 100%;
+							border: 2px solid white;
+							border-radius: 50%;
+
+							.reaction-head{
+								fill: rgb(229, 233, 236);
+								transition: fill 200ms linear 0s;
+							}
+
+							.reaction-face{
+								fill: rgb(165, 178, 189);
+								transition: fill 200ms linear 0s;
+							}
+						}
+					}
+				}
+
+				.spl-single-post-reaction-button:nth-child(2){
+					margin-left: 8px;
+				}
+			}
+		}
+	}
+}
+
+.spl-like:hover svg .reaction-head{
+	fill: #FFDA6A !important;
+}
+
+
+.spl-like:hover svg .reaction-face{
+	fill: black !important;
+	animation: yes 0.7s ease-in-out;
+}
+
+@keyframes yes{
+	0%{
+		transform: translate3d(0, -2px, 0);
+	}
+	20%{
+		transform: translate3d(0, 2px, 0);
+	}
+	40%{
+		transform: translate3d(0, -2px, 0);
+	}
+	60%{
+		transform: translate3d(0, 2px, 0);
+	}
+	80%{
+		transform: translate3d(0, -2px, 0);
+	}
+	100%{
+		transform: translate3d(0, 0px, 0);
+	}
+}
+
+.spl-dislike:hover svg .reaction-head{
+	fill: #BDD6FF !important;
+}
+
+.spl-dislike:hover svg .reaction-face{
+	fill: black !important;
+	animation: no 0.7s ease-in-out;
+}
+
+@keyframes no{
+	0%{
+		transform: translate3d(2px, 0px, 0);
+	}
+	20%{
+		transform: translate3d(-2px, 0px, 0);
+	}
+	40%{
+		transform: translate3d(2px, 0px, 0);
+	}
+	60%{
+		transform: translate3d(-2px, 0px, 0);
+	}
+	80%{
+		transform: translate3d(2px, 0px, 0);
+	}
+	100%{
+		transform: translate3d(0px, 0px, 0);
+	}
+}

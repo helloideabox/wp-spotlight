@@ -3,7 +3,7 @@
  * Responsible for setting up constants, classes and templates.
  *
  * @author  IdeaBox
- * @package Elementor Widget Manager/Loader
+ * @package Spotlight/Loader
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -89,7 +89,7 @@ class  Spotlight_Loader {
 
 			$post_type_data[] = array(
 				'title'     => get_the_title(),
-				'excerpt'   => get_the_excerpt(),
+				'excerpt'   => substr( get_the_excerpt(), 0, 300 ),  // custom excerpt length.
 				'content'   => get_the_content(),
 				'permalink' => get_permalink(),
 			);
