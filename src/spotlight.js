@@ -3,6 +3,7 @@ import ModalHeader from './component/modalHeader/modalHeader';
 import ModalPost from './component/modalBody/modalPost';
 import ModalForm from './component/modalBody/modalForm';
 import ModalSinglePost from './component/modalSinglePost/modalSinglePost';
+import ModalSearch from './component/modalSearch/modalSearch';
 import { CSSTransition } from 'react-transition-group';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import parse from 'html-react-parser';
@@ -32,6 +33,8 @@ class Spotlight extends Component {
 			isFocusAnimation: false,
 			isSinglePostOpen: false,
 			singlePostIndex: 0,
+			isSearch: false,
+			query: '',
 		}
 
 		// For having reference of input element in dom.
@@ -43,6 +46,9 @@ class Spotlight extends Component {
 		this.handleBlur = this.handleBlur.bind( this );
 		this.handlePost = this.handlePost.bind( this );
 		this.handleClose = this.handleClose.bind( this );
+		this.handleSearch = this.handleSearch.bind( this );
+		this.searchText = this.searchText.bind( this );
+		this.updatePost = this.updatePost.bind( this );
 	}
 
 	componentDidUpdate( prevProps, prevState ) {
@@ -68,6 +74,13 @@ class Spotlight extends Component {
 	handleClick( bool ) {
 		this.setState( { isAnswer: bool } );
 		this.setState( { isFocusAnimation: bool } );
+		this.setState( { isSearch: false } );
+
+		// To clear the input text and the query string if back button is clicked.
+		if( this.state.isSearch ) {
+			this.setState( { query: '' } );
+			this.inputText.current.value = '';
+		}
 	}
 
 	showModal() {
@@ -83,10 +96,31 @@ class Spotlight extends Component {
 	handlePost( index, bool ) {
 		this.setState( { singlePostIndex: index } );
 		this.setState( { isSinglePostOpen: bool } );
+		this.setState( { isFocus: false } );
 	}
 
 	handleClose( bool ) {
 		this.setState( { isSinglePostOpen: bool } );
+		this.inputText.current.focus();
+	}
+
+	updatePost( post ) {
+		let { posts } = this.state;
+		posts = [];
+		posts.push( ...post );
+
+		this.setState( { posts } );
+	}
+
+	searchText( e ) {
+		this.setState( { query: e.target.value } )
+	}
+
+	handleSearch() {
+		if( this.state.query != '' ) {
+			this.setState( { isFocusAnimation: false } );
+			this.setState( { isSearch: true } );
+		}
 	}
 
 	render() {
@@ -109,15 +143,22 @@ class Spotlight extends Component {
 					classNames="modal"
 				>
 					<div className="spl-modal-container">
-						<div className={ "spl-modal-scroll-container " + ( this.state.isSinglePostOpen? 'overflow' : null )}>
-							<ModalHeader onClick={ this.handleClick } isAnswer={ this.state.isAnswer } />
+						<div className={ "spl-modal-scroll-container " + ( this.state.isSinglePostOpen? 'overflow' : '' ) + ( this.state.isSearch? 'spl-modal-search-container' : '' )}>
+							<ModalHeader
+								onClick={ this.handleClick }
+								isAnswer={ this.state.isAnswer }
+								isSearch = { this.state.isSearch }
+							/>
 
-							<div className={ this.state.isAnswer? "spl-heading-post-container" : "spl-heading-form-container"}>
+							<div className={ this.state.isAnswer? ! this.state.isSearch?"spl-heading-post-container" : 'spl-heading-search-container' : "spl-heading-form-container" }>
 								{
 									this.state.isAnswer?
-									<div>
-										<h2 className="spl-post-heading">{ __( 'Instant Answers' ) }</h2>
-									</div>
+										! this.state.isSearch?
+										<div>
+											<h2 className="spl-post-heading">{ __( 'Instant Answers' ) }</h2>
+										</div>
+										:
+										null
 									:
 									<div></div>
 								}
@@ -126,10 +167,18 @@ class Spotlight extends Component {
 							<main className="spl-main-container">
 							{
 								this.state.isAnswer?
-								<ModalPost 
-									posts={ this.state.posts }
-									onClick={ this.handlePost }
-								/>
+									this.state.isSearch?
+									<ModalSearch
+										query={ this.state.query }
+										onClick={ this.handlePost }
+										onPostUpdate={ this.updatePost }
+									/>
+									:
+									<ModalPost 
+										posts={ this.state.posts }
+										onClick={ this.handlePost }
+										onPostUpdate={ this.updatePost }
+									/>
 								:
 								<ModalForm />
 							}
@@ -138,10 +187,10 @@ class Spotlight extends Component {
 							{
 								this.state.isAnswer?
 								<div className={ "spl-search-container " + ( this.state.isFocus? 'is-focussed' : 'not-focussed' ) }>
-									<input type="text" ref={ this.inputText } placeholder="What can we help you with?" className="spl-search-text" onFocus={ this.handleFocus } onBlur={ this.handleBlur }/>
+									<input type="text" ref={ this.inputText } placeholder="What can we help you with?" className="spl-search-text" onFocus={ this.handleFocus } onBlur={ this.handleBlur } onChange={ this.searchText }/>
 
 									<div className="spl-search-button-container">
-										<button className="spl-search-button">
+										<button className="spl-search-button" onClick={ this.handleSearch }>
 											<svg height="20px" width="20px">
 												<path fill-rule="evenodd" d="M10.5 17.917c1.7 0 3.3-.597 4.5-1.492l4.3 4.277c.2.199.5.298.7.298.2 0 .5-.1.7-.298.4-.398.4-.995 0-1.393l-4.2-4.375c1-1.293 1.5-2.785 1.5-4.475C18 6.38 14.6 3 10.5 3S3 6.381 3 10.459c0 4.077 3.4 7.458 7.5 7.458zm0-12.928c3 0 5.5 2.486 5.5 5.47 0 2.983-2.5 5.47-5.5 5.47S5 13.441 5 10.458c0-2.984 2.5-5.47 5.5-5.47z">
 												</path>

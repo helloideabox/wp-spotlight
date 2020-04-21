@@ -247,6 +247,12 @@ $height: 588px;
 	min-height: 153px;
 }
 
+.spl-heading-search-container{
+	min-height: 0px;
+	height: 0;
+	transition: all 250ms ease 0s;
+}
+
 .spl-main-container{
 	background-color: white;
 	width: 100%;

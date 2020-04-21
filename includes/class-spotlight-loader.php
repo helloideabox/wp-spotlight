@@ -23,19 +23,22 @@ class  Spotlight_Loader {
 		// Enqueue style and script for frontend.
 		add_action( 'wp_enqueue_scripts', array( $this, 'register_script' ) );
 
+		// Enqueue admin script for settings page.
+		add_action( 'admin_enqueue_scripts', array( $this, 'register_admin_script' ) );
+
 		// Load frontend.
 		add_action( 'wp_footer', array( $this, 'load_view' ) );
 
 		// The following registers an api route with custom parameters.
 		add_action( 'rest_api_init', array( $this, 'add_custom_post_types_api' ) );
+
+		add_action( 'admin_menu', array( $this, 'register_spotlight_settings' ) );
 	}
 
 	/**
 	 * For registering script and stylesheet.
 	 */
 	public function register_script() {
-
-		wp_enqueue_style( 'sp-style', SPOTLIGHT_URL . 'assets/style.css', array(), SPOTLIGHT_VERSION, false );
 
 		// Enqueueing build script and styles.
 		wp_enqueue_style( 'spl-react-style', SPOTLIGHT_URL . 'build/admin.css', array( 'wp-components' ), SPOTLIGHT_VERSION, false );
@@ -45,7 +48,19 @@ class  Spotlight_Loader {
 	}
 
 	/**
-	 * For registering custo route.
+	 * For registering script and stylesheet for spotlight admin setting page.
+	 */
+	public function register_admin_script( $hook ) {
+
+		if ( 'toplevel_page_spotlight' === $hook ) {
+			wp_enqueue_style( 'spl-style', SPOTLIGHT_URL . 'assets/style.css', array(), SPOTLIGHT_VERSION, false );
+			wp_enqueue_script( 'spl-script', SPOTLIGHT_URL . 'assets/script.js', array(), SPOTLIGHT_VERSION, true );
+		}
+	}
+
+
+	/**
+	 * For registering custom route.
 	 */
 	public function add_custom_post_types_api() {
 		register_rest_route(
@@ -96,6 +111,34 @@ class  Spotlight_Loader {
 		endwhile;
 
 		return $post_type_data;
+	}
+
+
+	/**
+	 * Registering spotlight manager.
+	 *
+	 * @return void
+	 */
+	public function register_spotlight_settings() {
+		// Adding menu to spotlight.
+		add_menu_page(
+			__( 'Spotlight', 'spotlight' ), // Page title.
+			__( 'Spotlight', 'spotlight' ), // Menu title.
+			'manage_options', // Capability.
+			'spotlight', // Menu slug.
+			array( $this, 'render_spotlight_settings_page' ), // Callback function.
+			'', // Url.
+			26 // Position of page in admin bar.
+		);
+	}
+
+	/**
+	 * Renders spotlight settings page.
+	 *
+	 * @return void
+	 */
+	public function render_spotlight_settings_page() {
+		require_once SPOTLIGHT_PATH . './template/settings.php';
 	}
 
 

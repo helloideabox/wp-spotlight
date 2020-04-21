@@ -51,6 +51,19 @@ class ModalHeader extends Component{
 					</div>
 					<div className="spl-ask">{ __('Ask') }</div>
 				</a>
+
+				{
+					this.props.isSearch?
+				<a className="spl-navigation-back" onClick={ () => this.handleAnswer( true ) }>
+					<span>
+						<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+							<path fill-rule="evenodd" d="M9.263 11H17a1 1 0 010 2H9.263l2.792 2.578a.788.788 0 010 1.178.94.94 0 01-.638.244.94.94 0 01-.639-.244l-4.513-4.167a.788.788 0 010-1.178l4.513-4.167a.956.956 0 011.277 0 .788.788 0 010 1.179L9.263 11z"></path>
+						</svg>
+					</span>
+				</a>
+				:
+				null
+				}
 			</div>
 		)
 	}

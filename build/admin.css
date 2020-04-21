@@ -212,6 +212,11 @@
   background-color: #fc5d7d;
   min-height: 153px; }
 
+.spl-heading-search-container {
+  min-height: 0px;
+  height: 0;
+  transition: all 250ms ease 0s; }
+
 .spl-main-container {
   background-color: white;
   width: 100%;
@@ -317,6 +322,21 @@
 .spl-active {
   font-weight: bold;
   background-color: #e74868; }
+
+.spl-navigation-back {
+  position: absolute;
+  top: 13px;
+  z-index: 1;
+  left: -1px;
+  padding: 0px 12px; }
+  .spl-navigation-back span {
+    height: 24px;
+    width: 24px;
+    display: block;
+    cursor: pointer;
+    color: white; }
+    .spl-navigation-back span svg {
+      fill: white; }
 
 .spl-modal-posts-lists, .spl-single-post-container, .spl-posts-loading, .spl-modal-posts-lists-none {
   list-style: none;
@@ -674,4 +694,11 @@
     transform: translate3d(2px, 0px, 0); }
   100% {
     transform: translate3d(0px, 0px, 0); } }
+
+.spl-modal-search-container {
+  height: calc( 100% - 59px); }
+  .spl-modal-search-container .spl-main-container {
+    height: 100%; }
+    .spl-modal-search-container .spl-main-container .spl-modal-posts-container {
+      margin-top: 10px; }
 

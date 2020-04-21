@@ -1,4 +1,4 @@
-import './modalPost.scss';
+import './modalSearch.scss';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import parse from 'html-react-parser';
 
@@ -14,7 +14,7 @@ const {
 
 
 
-class ModalPost extends Component{
+class ModalSearch extends Component{
 
 	constructor( props ) {
 		super( props );
@@ -45,10 +45,26 @@ class ModalPost extends Component{
 			.then( data => {
 
 				let {posts} = this.state;
-				posts.push( ...data );
+
+				// Split query for words.
+				let query = this.props.query.split( ' ' );
+
+				// Search for title related to query.
+				data.map( value => {
+					if( query.some( val =>{
+							if( value.title.toUpperCase().indexOf( val.toUpperCase() ) >= 0 ) {
+								return true;
+							}
+						} ) 
+					) {
+						posts.push( value );
+					}
+				} );
+
 				this.setState( { posts } );
 				this.setState( { isPostFetch: true } );
 
+				// Update post array for parent.
 				this.props.onPostUpdate( this.state.posts );
 			} )
 			.catch( error => {
@@ -140,4 +156,4 @@ class ModalPost extends Component{
 	}
 }
 
-export default ModalPost;
+export default ModalSearch;
