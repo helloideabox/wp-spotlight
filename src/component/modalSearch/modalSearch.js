@@ -20,58 +20,21 @@ class ModalSearch extends Component{
 		super( props );
 
 		this.state = {
-			posts:[],
-			isPostFetch: false,
+			posts: [],
+			isSearchResult: false,
 		}
-		this.post_types = [ 'post' ];
 
 		this.handleSinglePost = this.handleSinglePost.bind( this );
 	}
 
 	componentDidMount() {
 
-		let query = '';
-
-		// Making query for fetch function.
-		this.post_types.map( value => {
-			query += 'post_types[]=' + value + '&';
-		} );
-
-		// To trim the last '&' in the string.
-		query = query.substring( 0, query.length-1 );
-
-		fetch( `${siteName}/wp-json/spotlight/v1/posts/?${query}` )
-			.then( response => response.json() )
-			.then( data => {
-
-				let {posts} = this.state;
-
-				// Split query for words.
-				let query = this.props.query.split( ' ' );
-
-				// Search for title related to query.
-				data.map( value => {
-					if( query.some( val =>{
-							if( value.title.toUpperCase().indexOf( val.toUpperCase() ) >= 0 ) {
-								return true;
-							}
-						} ) 
-					) {
-						posts.push( value );
-					}
-				} );
-
-				this.setState( { posts } );
-				this.setState( { isPostFetch: true } );
-
-				// Update post array for parent.
-				this.props.onPostUpdate( this.state.posts );
-			} )
-			.catch( error => {
-				console.log( error );
-			} )
+			let { posts } = this.state;
+			posts.push( ...this.props.searchResult );
+			
+			this.setState( { posts } );
+			this.setState( { isSearchResult: this.props.isSearchResult } );
 	}
-
 
 	handleSinglePost( index, bool ) {
 
@@ -87,7 +50,7 @@ class ModalSearch extends Component{
 				<ul className="spl-modal-posts-lists">
 					<TransitionGroup className="spl-modal-posts-transition" component={null}>
 						{
-							this.state.posts.length == 0 && this.state.isPostFetch?
+							this.state.posts.length == 0 && this.state.isSearchResult?
 							<li className="spl-modal-posts-lists-none">{ __( 'No post created till now.' ) }</li>
 							:
 							Object.keys( this.state.posts ).map( ( index ) => {
@@ -114,42 +77,6 @@ class ModalSearch extends Component{
 						}
 					</TransitionGroup>
 				</ul>
-
-				<CSSTransition
-					in={ ! this.state.isPostFetch }
-					unmountOnExit
-					timeout={150}
-					classNames="loading"
-				>
-					<div>
-						<div className="spl-posts-loading">
-							<h2 className="spl-posts-loading-heading"></h2>
-							<div className="spl-posts-loading-text-line"></div>
-							<div className="spl-posts-loading-text-line"></div>
-							<div className="spl-posts-loading-text-line"></div>
-							<div className="spl-posts-loading-text-line"></div>
-							<div className="spl-posts-loading-text-line"></div>
-						</div>
-
-						<div className="spl-posts-loading">
-							<h2 className="spl-posts-loading-heading"></h2>
-							<div className="spl-posts-loading-text-line"></div>
-							<div className="spl-posts-loading-text-line"></div>
-							<div className="spl-posts-loading-text-line"></div>
-							<div className="spl-posts-loading-text-line"></div>
-							<div className="spl-posts-loading-text-line"></div>
-						</div>
-
-						<div className="spl-posts-loading">
-							<h2 className="spl-posts-loading-heading"></h2>
-							<div className="spl-posts-loading-text-line"></div>
-							<div className="spl-posts-loading-text-line"></div>
-							<div className="spl-posts-loading-text-line"></div>
-							<div className="spl-posts-loading-text-line"></div>
-							<div className="spl-posts-loading-text-line"></div>
-						</div>
-					</div>
-				</CSSTransition>
 			</div>
 			</Fragment>
 		)

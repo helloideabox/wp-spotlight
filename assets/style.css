@@ -1,0 +1,51 @@
+.spl-settings-wrap{
+	margin: 10px 20px 0 2px;
+}
+
+.spl-settings-wrap > h1 {
+	font-size: 23px;
+	font-weight: 400;
+	margin: 0;
+	padding: 9px 0 4px 0;
+	line-height: 1.3;
+	color: #23282d;
+}
+
+.spl-nav-tab-wrapper{
+	border-bottom: 1px solid #ccc;
+	margin: 0;
+	padding-top: 9px;
+	padding-bottom: 0;
+	line-height: inherit;
+	display: flex;
+}
+
+.spl-nav-tab{
+	border: 1px solid #ccc;
+	margin-left: 0.5em;
+	padding: 5px 10px;
+	font-size: 14px;
+	line-height: 1.8;
+	font-weight: 600;
+	text-decoration: none;
+	white-space: nowrap;
+	color: #555;
+	background: #e5e5e5;
+	margin-bottom: -1px;
+}
+
+.spl-nav-tab-active{
+	border-bottom: 1px solid #f1f1f1;
+	background: #f1f1f1;
+	color: #000;
+	box-shadow: none;
+}
+
+.spl-settings-form-page{
+	padding-top: 30px;
+	display: none;
+}
+
+.spl-active{
+	display: block;
+}

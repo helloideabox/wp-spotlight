@@ -33,6 +33,13 @@ class  Spotlight_Loader {
 		add_action( 'rest_api_init', array( $this, 'add_custom_post_types_api' ) );
 
 		add_action( 'admin_menu', array( $this, 'register_spotlight_settings' ) );
+
+		// Action to register setting for get_option function.
+		add_action( 'init', array( $this, 'register_plugin_settings' ) );
+
+		// Action to handle the ajax response.
+		add_action( 'wp_ajax_handle_submit', array( $this, 'handle_form_submit' ) );
+		add_action( 'wp_ajax_nopriv_handle_submit', array( $this, 'handle_form_submit' ) );
 	}
 
 	/**
@@ -43,18 +50,27 @@ class  Spotlight_Loader {
 		// Enqueueing build script and styles.
 		wp_enqueue_style( 'spl-react-style', SPOTLIGHT_URL . 'build/admin.css', array( 'wp-components' ), SPOTLIGHT_VERSION, false );
 		wp_enqueue_script( 'spl-react-script', SPOTLIGHT_URL . 'build/admin.js', array( 'wp-components', 'wp-element', 'wp-api', 'wp-i18n' ), SPOTLIGHT_VERSION, true );
-
 		wp_localize_script( 'spl-react-script', 'siteName', get_site_url() );
 	}
 
 	/**
 	 * For registering script and stylesheet for spotlight admin setting page.
+	 *
+	 * @param string $hook To check the current page.
 	 */
 	public function register_admin_script( $hook ) {
 
 		if ( 'toplevel_page_spotlight' === $hook ) {
 			wp_enqueue_style( 'spl-style', SPOTLIGHT_URL . 'assets/style.css', array(), SPOTLIGHT_VERSION, false );
 			wp_enqueue_script( 'spl-script', SPOTLIGHT_URL . 'assets/script.js', array(), SPOTLIGHT_VERSION, true );
+			wp_localize_script(
+				'spl-script',
+				'settings',
+				array(
+					'ajax_url' => admin_url( 'admin-ajax.php' ),
+					'nonce'    => wp_create_nonce( 'ajax_nonce' ),
+				)
+			);
 		}
 	}
 
@@ -73,7 +89,7 @@ class  Spotlight_Loader {
 					'post_types' => array(
 						'description'       => __( 'Differnt types of post types for wp query', 'spotlight' ),
 						'type'              => 'array',
-						'default'           => array( 'post' ),
+						'default'           => array(),
 						'required'          => 'false',
 						'sanitize_callback' => 'wp_unslash',
 					),
@@ -99,16 +115,18 @@ class  Spotlight_Loader {
 
 		$query = new WP_Query( $args );
 
-		while ( $query->have_posts() ) :
-			$query->the_post();
+		if ( $query->have_posts() ) {
+			while ( $query->have_posts() ) :
+				$query->the_post();
 
-			$post_type_data[] = array(
-				'title'     => get_the_title(),
-				'excerpt'   => substr( get_the_excerpt(), 0, 300 ),  // custom excerpt length.
-				'content'   => get_the_content(),
-				'permalink' => get_permalink(),
-			);
-		endwhile;
+				$post_type_data[] = array(
+					'title'     => get_the_title(),
+					'excerpt'   => substr( get_the_excerpt(), 0, 300 ),  // custom excerpt length.
+					'content'   => get_the_content(),
+					'permalink' => get_permalink(),
+				);
+			endwhile;
+		}
 
 		return $post_type_data;
 	}
@@ -142,7 +160,6 @@ class  Spotlight_Loader {
 	}
 
 
-
 	/**
 	 * For loading the view in WordPress footer section.
 	 */
@@ -150,6 +167,52 @@ class  Spotlight_Loader {
 		echo '<div id="spl-root"></div>';
 	}
 
+
+	/**
+	 * Registering widget settings in rest-api.
+	 *
+	 * @return void
+	 */
+	public function register_plugin_settings() {
+		register_setting(
+			'spl-settings-group',
+			'spl_post_types',
+			array(
+				'show_in_rest' => array(
+					'schema' => array(
+						'type'  => 'array',
+						'items' => array(
+							'type' => 'string',
+						),
+					),
+				),
+				'default'      => array( 'post' ),
+			)
+		);
+	}
+
+
+
+	/**
+	 * Handling form submit.
+	 *
+	 * @return void
+	 */
+	public function handle_form_submit() {
+		// Checking for correct ajax request.
+		$query = array();
+		if ( check_ajax_referer( 'ajax_nonce', 'security' ) ) {
+			if ( isset( $_POST['spl_cpt_support'] ) ) {
+				// Sanitizing array values.
+				$query = array_map( 'sanitize_text_field', wp_unslash( $_POST['spl_cpt_support'] ) );
+			}
+		}
+
+		$status = update_option( 'spl_post_types', $query );
+		print_r( $status );
+
+		wp_die();
+	}
 }
 
 $spotlight = new Spotlight_Loader();

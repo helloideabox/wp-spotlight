@@ -22,38 +22,54 @@ class ModalPost extends Component{
 		this.state = {
 			posts:[],
 			isPostFetch: false,
+			post_types: [],
 		}
-		this.post_types = [ 'post' ];
 
 		this.handleSinglePost = this.handleSinglePost.bind( this );
 	}
 
-	componentDidMount() {
+	async componentDidMount() {
 
-		let query = '';
+		// Getting data from setting model api.
+		wp.api.loadPromise.then( () => {
+			this.widget = new wp.api.models.Settings();
 
-		// Making query for fetch function.
-		this.post_types.map( value => {
-			query += 'post_types[]=' + value + '&';
+			this.widget.fetch().then( response => {
+
+				let { post_types } = this.state;
+				post_types.push( ...response.spl_post_types );
+
+				this.setState( { post_types } );
+
+				let query = '';
+
+				// Making query for fetch function.
+				if( post_types.length > 0 ) {
+					post_types.map( value => {
+						query += 'post_types[]=' + value + '&';
+					} );
+
+					// To trim the last '&' in the string.
+					query = query.substring( 0, query.length-1 );
+				}
+
+				// fetching from wp api.
+				fetch( `${siteName}/wp-json/spotlight/v1/posts/?${query}` )
+					.then( response => response.json() )
+					.then( data => {
+
+						let {posts} = this.state;
+						posts.push( ...data );
+						this.setState( { posts } );
+						this.setState( { isPostFetch: true } );
+
+						this.props.onPostUpdate( this.state.posts );
+					} )
+					.catch( error => {
+						console.log( error );
+					} )
+			} );
 		} );
-
-		// To trim the last '&' in the string.
-		query = query.substring( 0, query.length-1 );
-
-		fetch( `${siteName}/wp-json/spotlight/v1/posts/?${query}` )
-			.then( response => response.json() )
-			.then( data => {
-
-				let {posts} = this.state;
-				posts.push( ...data );
-				this.setState( { posts } );
-				this.setState( { isPostFetch: true } );
-
-				this.props.onPostUpdate( this.state.posts );
-			} )
-			.catch( error => {
-				console.log( error );
-			} )
 	}
 
 

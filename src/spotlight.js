@@ -30,11 +30,13 @@ class Spotlight extends Component {
 			isAnswer: true,
 			isFocus: false,
 			posts: [],
+			search_posts: [],
 			isFocusAnimation: false,
 			isSinglePostOpen: false,
 			singlePostIndex: 0,
 			isSearch: false,
 			query: '',
+			isSearchResult: false,
 		}
 
 		// For having reference of input element in dom.
@@ -80,6 +82,7 @@ class Spotlight extends Component {
 		if( this.state.isSearch ) {
 			this.setState( { query: '' } );
 			this.inputText.current.value = '';
+			this.inputText.current.focus();
 		}
 	}
 
@@ -118,8 +121,58 @@ class Spotlight extends Component {
 
 	handleSearch() {
 		if( this.state.query != '' ) {
-			this.setState( { isFocusAnimation: false } );
+			// this.setState( { isFocusAnimation: false } );
 			this.setState( { isSearch: true } );
+			this.setState( { singlePostIndex: 0 } );
+			this.setState( { isSearchResult: false } );
+			this.inputText.current.focus();
+
+			// Getting data from setting model api.
+			wp.api.loadPromise.then( () => {
+				this.posts = new wp.api.models.Settings();
+
+				this.posts.fetch().then( response => {
+
+					let query = '';
+
+					// Making query for fetch function.
+					response.spl_post_types.map( value => {
+						query += 'post_types[]=' + value + '&';
+					} );
+
+					// To trim the last '&' in the string.
+					query = query.substring( 0, query.length-1 );
+
+					fetch( `${siteName}/wp-json/spotlight/v1/posts/?${query}` )
+						.then( response => response.json() )
+						.then( data => {
+
+							let { search_posts } = this.state;
+							search_posts = [];
+
+							// Split query for words.
+							let query = this.state.query.split( ' ' );
+
+							// Search for title related to query.
+							data.map( value => {
+								if( query.some( val =>{
+										if( value.title.toUpperCase().indexOf( val.toUpperCase() ) >= 0 ) {
+											return true;
+										}
+									} ) 
+								) {
+									search_posts.push( value );
+								}
+							} );
+
+							this.setState( { search_posts } );
+							this.setState( { isSearchResult: true } );
+						} )
+						.catch( error => {
+							console.log( error );
+						} )
+				} );
+			} );
 		}
 	}
 
@@ -168,11 +221,41 @@ class Spotlight extends Component {
 							{
 								this.state.isAnswer?
 									this.state.isSearch?
-									<ModalSearch
-										query={ this.state.query }
-										onClick={ this.handlePost }
-										onPostUpdate={ this.updatePost }
-									/>
+										this.state.isSearchResult?
+											<ModalSearch
+												onClick={ this.handlePost }
+												searchResult={ this.state.search_posts }
+												isSearchResult={ this.state.isSearchResult }
+											/>
+										:
+										<div className="spl-posts-loading-container">
+											<div className="spl-posts-loading">
+												<h2 className="spl-posts-loading-heading"></h2>
+												<div className="spl-posts-loading-text-line"></div>
+												<div className="spl-posts-loading-text-line"></div>
+												<div className="spl-posts-loading-text-line"></div>
+												<div className="spl-posts-loading-text-line"></div>
+												<div className="spl-posts-loading-text-line"></div>
+											</div>
+
+											<div className="spl-posts-loading">
+												<h2 className="spl-posts-loading-heading"></h2>
+												<div className="spl-posts-loading-text-line"></div>
+												<div className="spl-posts-loading-text-line"></div>
+												<div className="spl-posts-loading-text-line"></div>
+												<div className="spl-posts-loading-text-line"></div>
+												<div className="spl-posts-loading-text-line"></div>
+											</div>
+
+											<div className="spl-posts-loading">
+												<h2 className="spl-posts-loading-heading"></h2>
+												<div className="spl-posts-loading-text-line"></div>
+												<div className="spl-posts-loading-text-line"></div>
+												<div className="spl-posts-loading-text-line"></div>
+												<div className="spl-posts-loading-text-line"></div>
+												<div className="spl-posts-loading-text-line"></div>
+											</div>
+										</div>
 									:
 									<ModalPost 
 										posts={ this.state.posts }
@@ -210,13 +293,23 @@ class Spotlight extends Component {
 							classNames="single-post"
 						>
 							<div className="spl-modal-single-post-container">
-								{ this.state.posts.length > 0?
-									<ModalSinglePost 
-										content={ parse( __( this.state.posts[this.state.singlePostIndex].content) ) }
-										onClick={ this.handleClose }
-									/>
-									:
-									null	
+								{ 
+									this.state.isSearch?
+										this.state.search_posts.length > 0 ?
+											<ModalSinglePost 
+												content={ parse( __( this.state.search_posts[this.state.singlePostIndex].content) ) }
+												onClick={ this.handleClose }
+											/>
+											:
+											null
+										:
+										this.state.posts.length > 0 ?
+											<ModalSinglePost 
+												content={ parse( __( this.state.posts[this.state.singlePostIndex].content) ) }
+												onClick={ this.handleClose }
+											/>
+											:
+											null
 								}
 							</div>
 						</CSSTransition>
