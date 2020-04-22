@@ -692,4 +692,63 @@
     height: 100%; }
     .spl-modal-search-container .spl-main-container .spl-modal-posts-container {
       margin-top: 10px; }
+      .spl-modal-search-container .spl-main-container .spl-modal-posts-container .spl-modal-posts-search-lists-none {
+        padding-top: 140px;
+        line-height: 0;
+        margin: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center; }
+        .spl-modal-search-container .spl-main-container .spl-modal-posts-container .spl-modal-posts-search-lists-none .spl-modal-posts-search-lists-none-wrap {
+          width: 200px;
+          height: 200px; }
+          .spl-modal-search-container .spl-main-container .spl-modal-posts-container .spl-modal-posts-search-lists-none .spl-modal-posts-search-lists-none-wrap .spl-modal-posts-search-lists-none-img-container {
+            height: 86px;
+            width: 86px;
+            margin: 10px auto; }
+          .spl-modal-search-container .spl-main-container .spl-modal-posts-container .spl-modal-posts-search-lists-none .spl-modal-posts-search-lists-none-wrap h4 {
+            margin: 0;
+            margin-bottom: 5px;
+            text-align: center;
+            font-weight: 500;
+            color: #2a3b47; }
+          .spl-modal-search-container .spl-main-container .spl-modal-posts-container .spl-modal-posts-search-lists-none .spl-modal-posts-search-lists-none-wrap .spl-modal-posts-search-lists-none-msg-wrap {
+            margin: 0;
+            margin-bottom: 1rem;
+            color: #72808e;
+            text-align: center;
+            font-size: 13px; }
+            .spl-modal-search-container .spl-main-container .spl-modal-posts-container .spl-modal-posts-search-lists-none .spl-modal-posts-search-lists-none-wrap .spl-modal-posts-search-lists-none-msg-wrap .spl-modal-posts-search-lists-none-getInTouch {
+              display: inline-block;
+              cursor: pointer;
+              color: #0077cc; }
+      .spl-modal-search-container .spl-main-container .spl-modal-posts-container .spl-results-getInTouch {
+        margin-bottom: 20px;
+        padding: 20px 18px 25px; }
+        .spl-modal-search-container .spl-main-container .spl-modal-posts-container .spl-results-getInTouch .spl-results-getInTouch-text {
+          margin: 0;
+          color: #93a1af;
+          letter-spacing: 0.5px;
+          text-transform: uppercase;
+          line-height: 1.2;
+          font-size: 13px;
+          font-weight: 500;
+          margin-bottom: 20px; }
+        .spl-modal-search-container .spl-main-container .spl-modal-posts-container .spl-results-getInTouch .spl-results-getInTouch-link {
+          display: flex;
+          text-decoration: none;
+          cursor: pointer;
+          color: #0077cc;
+          transition: color .25s ease; }
+          .spl-modal-search-container .spl-main-container .spl-modal-posts-container .spl-results-getInTouch .spl-results-getInTouch-link:hover {
+            color: #1292ee;
+            outline-width: 0px;
+            text-decoration: underline; }
+          .spl-modal-search-container .spl-main-container .spl-modal-posts-container .spl-results-getInTouch .spl-results-getInTouch-link svg {
+            fill: #93a1af; }
+          .spl-modal-search-container .spl-main-container .spl-modal-posts-container .spl-results-getInTouch .spl-results-getInTouch-link .spl-results-getInTouch-ask {
+            margin-left: 8px;
+            font-size: 13px;
+            line-height: 1.5;
+            font-weight: 500; }
 

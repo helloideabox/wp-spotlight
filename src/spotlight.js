@@ -226,6 +226,7 @@ class Spotlight extends Component {
 												onClick={ this.handlePost }
 												searchResult={ this.state.search_posts }
 												isSearchResult={ this.state.isSearchResult }
+												onClick={ this.handleClick }
 											/>
 										:
 										<div className="spl-posts-loading-container">

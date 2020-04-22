@@ -6,6 +6,89 @@
 
 		.spl-modal-posts-container{
 			margin-top: 10px;
+
+			.spl-modal-posts-search-lists-none{
+				padding-top: 140px;
+				line-height: 0;
+				margin: 0;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+
+				.spl-modal-posts-search-lists-none-wrap{
+					width: 200px;
+					height: 200px;
+
+					.spl-modal-posts-search-lists-none-img-container{
+						height: 86px;
+						width: 86px;
+						margin: 10px auto;
+					}
+
+					h4{
+						margin: 0;
+						margin-bottom: 5px;
+						text-align: center;
+						font-weight: 500;
+						color: rgb(42, 59, 71);
+					}
+
+					.spl-modal-posts-search-lists-none-msg-wrap{
+						margin: 0;
+						margin-bottom: 1rem;
+						color: rgb(114, 128, 142);
+						text-align: center;
+						font-size: 13px;
+
+						.spl-modal-posts-search-lists-none-getInTouch{
+							display: inline-block;
+							cursor: pointer;
+							color: rgb(0, 119, 204);
+						}
+					}
+				}
+			}
+
+			.spl-results-getInTouch{
+				margin-bottom: 20px;
+				padding: 20px 18px 25px;
+
+				.spl-results-getInTouch-text{
+					margin: 0;
+					color: rgb(147, 161, 175);
+					letter-spacing: 0.5px;
+					text-transform: uppercase;
+					line-height: 1.2;
+					font-size: 13px;
+					font-weight: 500;
+					margin-bottom: 20px;
+				}
+
+				.spl-results-getInTouch-link{
+					display: flex;
+					text-decoration: none;
+					cursor: pointer;
+					color: rgb(0, 119, 204);
+					transition: color .25s ease;
+
+					&:hover{
+						color: rgb(18, 146, 238);
+						outline-width: 0px;
+						text-decoration: underline;
+					}
+
+					svg{
+						fill: rgb(147, 161, 175);
+					}
+
+					.spl-results-getInTouch-ask{
+						margin-left: 8px;
+						font-size: 13px;
+						line-height: 1.5;
+						font-weight: 500;
+					}
+				}
+			}
 		}
 	}
 }
