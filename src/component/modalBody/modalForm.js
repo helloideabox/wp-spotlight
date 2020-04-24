@@ -25,10 +25,15 @@ class ModalPost extends Component{
 			email: '',
 			query: '',
 			files: [],
-			files2: '',
 			isfilesList: false,
+			formErr:{
+				nameErr: '',
+				emailErr: '',
+				queryErr: '',
+			}
 		}
 
+		this.err = true;
 		this.fileUpload = React.createRef();
 
 		this.handleChange = this.handleChange.bind( this );
@@ -37,6 +42,7 @@ class ModalPost extends Component{
 		this.handleSubmit = this.handleSubmit.bind( this );
 		this.closeUploadList = this.closeUploadList.bind( this );
 		this.openUploadList = this.openUploadList.bind( this );
+		this.handleFormValidate = this.handleFormValidate.bind( this );
 	}
 
 	componentDidMount() {
@@ -51,7 +57,6 @@ class ModalPost extends Component{
 		
 		let { files } = this.state;
 
-		this.setState( { files2: e.target.files[0] } );
 		Array.from( e.target.files ).map( value => {
 
 			if( files.every( val => val.name != value.name ) ) {
@@ -66,39 +71,82 @@ class ModalPost extends Component{
 		this.fileUpload.current.click();
 	}
 
-	async handleSubmit( e ) {
-		e.preventDefault();
-		console.log( 'submitted' );
+	handleFormValidate() {
+		console.log( 'adadsa' );
+		let {formErr} = this.state;
 
-		let form_data = new FormData();
-		form_data.append( 'action', 'handle_ask' );
-		form_data.append( 'security', ajax.nonce );
-		form_data.append( 'name', this.state.name );
-		form_data.append( 'email', this.state.email );
-		form_data.append( 'query', this.state.query );
+		// Reseting values.
+		formErr.nameErr = '';
+		formErr.emailErr = '';
+		formErr.queryErr = '';
 
-		let { files } = this.state;
-		files.forEach( file => {
-			form_data.append( 'files[]', file );
-		});
+		if( this.state.name.length === 0 ) {
+			formErr.nameErr = '*Please enter your name.';
+			this.setState( { formErr } );
+			return false;
+		}
+		
+		if( this.state.email.length === 0 ) {
+			formErr.emailErr = '*Please enter your email.';
+			this.setState( { formErr } );
+			return false;
+		}else if( ! this.state.email.match( /^(\S+@\S+\.\S+)$/ ) ) {
+			formErr.emailErr = '*Email is not valid.';
+			this.setState( { formErr } );
+			return false;
+		}
 
-		axios.post( ajax.ajax_url, form_data )
-		.then(  response => {
-			console.log(response.data);
-		} );
+		if( this.state.query.length === 0 ) {
+			formErr.queryErr = '*Please enter your suggestions 	or questions.';
+			this.setState( { formErr } );
+			return false;
+		}
+
+		return true;
+		
 	}
 
+	// Hangling form submit.
+	async handleSubmit( e ) {
+		e.preventDefault();
+
+		this.err = this.handleFormValidate();
+
+		if( this.err ) {
+			let form_data = new FormData();
+			form_data.append( 'action', 'handle_ask' );
+			form_data.append( 'security', ajax.nonce );
+			form_data.append( 'name', this.state.name );
+			form_data.append( 'email', this.state.email );
+			form_data.append( 'query', this.state.query );
+
+			let { files } = this.state;
+			files.forEach( file => {
+				form_data.append( 'files[]', file );
+			});
+
+			axios.post( ajax.ajax_url, form_data )
+			.then(  response => {
+				console.log(response.data);
+				console.log( 'submitted' );
+			} );
+		}
+	}
+
+	// Opening the upload list and restting the input value to empty.
 	openUploadList() {
 		this.fileUpload.current.value = '';
 		this.setState( { isfilesList: true } );
 	}
 
+	// Closing list when clicked outside the file list container.
 	closeUploadList( e ) {
 		if( e.target.className == 'spl-modal-form-fileUploadList file-list-enter-done' ) {
 			this.setState( { isfilesList: false } );
 		}
 	}
 
+	// For closing the list of file uploaded.
 	handleClose( index ) {
 
 		let { files } = this.state;
@@ -125,15 +173,35 @@ class ModalPost extends Component{
 				>
 					<div className="spl-modal-form-wrap">
 						<form className="spl-modal-form-container" action="post">
-							<div className="spl-modal-form-ask-name">
+							<div className={ "spl-modal-form-ask-name " + ( this.state.formErr.nameErr? 'form-err' : '' ) }>
 								<input type="text" className="spl-modal-input-name" name="name" placeholder={ __( "Name" ) } value={ this.state.name } onChange={ this.handleChange } required />
 							</div>
+							{
+								this.state.formErr.nameErr?
+								<small className="spl-modal-form-name-err">
+									{
+										this.state.formErr.nameErr
+									}
+								</small>
+								:
+								null
+							}
 
-							<div className="spl-modal-form-ask-email">
+							<div className={ "spl-modal-form-ask-email " + ( this.state.formErr.emailErr? 'form-err' : '' ) }>
 								<input type="email" className="spl-modal-input-email" name="email" placeholder={ __( "Eamil address" ) } value={ this.state.email } onChange={ this.handleChange } required />
 							</div>
+							{
+								this.state.formErr.emailErr?
+								<small className="spl-modal-form-email-err">
+									{
+										this.state.formErr.emailErr
+									}
+								</small>
+								:
+								null
+							}
 
-							<div className="spl-modal-form-ask-help">
+							<div className={ "spl-modal-form-ask-help " + ( this.state.formErr.queryErr? 'form-err' : '' ) }>
 								<textarea className="spl-modal-input-help" name="query" placeholder={ __( "How can we help?" ) } value={ this.state.query } onChange={ this.handleChange } ></textarea>
 								
 								<div className="spl-modal-form-fileUpload">
@@ -169,6 +237,16 @@ class ModalPost extends Component{
 									</div>
 								</CSSTransition>
 							</div>
+							{
+								this.state.formErr.queryErr?
+								<small className="spl-modal-form-query-err">
+									{
+										this.state.formErr.queryErr
+									}
+								</small>
+								:
+								null
+							}
 
 							
 							<input className="spl-modal-form-submit" type="submit" value={ __( 'Send a message' ) } onClick={ this.handleSubmit } />

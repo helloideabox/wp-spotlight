@@ -555,7 +555,8 @@
     background-color: white;
     border-radius: 3px;
     border: 1px solid #c1cbd4;
-    box-shadow: 0 3px 7px 0 rgba(100, 105, 155, 0.2); }
+    box-shadow: 0 3px 7px 0 rgba(100, 105, 155, 0.2);
+    border: 2px solid deepskyblue; }
     .spl-modal-form-wrap .spl-modal-form-ask-name .spl-modal-input-name, .spl-modal-form-wrap .spl-modal-form-ask-name .spl-modal-input-email, .spl-modal-form-wrap .spl-modal-form-ask-name .spl-modal-input-help, .spl-modal-form-wrap .spl-modal-form-ask-email .spl-modal-input-name, .spl-modal-form-wrap .spl-modal-form-ask-email .spl-modal-input-email, .spl-modal-form-wrap .spl-modal-form-ask-email .spl-modal-input-help, .spl-modal-form-wrap .spl-modal-form-ask-help .spl-modal-input-name, .spl-modal-form-wrap .spl-modal-form-ask-help .spl-modal-input-email, .spl-modal-form-wrap .spl-modal-form-ask-help .spl-modal-input-help {
       outline: none;
       padding: 0;
@@ -625,6 +626,20 @@
     color: white;
     height: 48px;
     padding: 0 1.5em; }
+
+small {
+  position: relative;
+  top: -10px;
+  left: 10px;
+  font-size: 12px !important;
+  display: block;
+  color: red; }
+
+.form-err {
+  border: 2px solid red !important; }
+
+.form-noerr {
+  border: 2px solid green !important; }
 
 .form-enter {
   opacity: 0; }

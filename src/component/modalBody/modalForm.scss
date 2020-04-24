@@ -15,6 +15,7 @@ $height: 588px;
 		border-radius: 3px;
 		border: 1px solid rgb(193, 203, 212);
 		box-shadow: 0 3px 7px 0 rgba(100, 105, 155, 0.2);
+		border: 2px solid deepskyblue;
 
 		.spl-modal-input-name, .spl-modal-input-email, .spl-modal-input-help{
 			outline: none;
@@ -109,6 +110,23 @@ $height: 588px;
 		height: 48px;
 		padding: 0 1.5em;
 	}
+}
+
+small{
+	position: relative;
+    top: -10px;
+    left: 10px;
+    font-size: 12px !important;
+    display: block;
+    color: red;
+}
+
+.form-err{
+	border: 2px solid red !important;
+}
+
+.form-noerr{
+	border: 2px solid green !important;
 }
 
 .form-enter {
