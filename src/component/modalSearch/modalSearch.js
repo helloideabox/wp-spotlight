@@ -40,7 +40,7 @@ class ModalSearch extends Component{
 	handleSinglePost( index, bool ) {
 
 		// Updating the props to parent.
-		this.props.onClick( index, bool );
+		this.props.onSinglePost( index, bool );
 	}
 
 	handleAsk( bool ) {

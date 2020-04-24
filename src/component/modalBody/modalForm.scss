@@ -1,0 +1,228 @@
+$height: 588px;
+
+.spl-modal-form-wrap{
+	padding: 16px;
+
+	.spl-modal-form-ask-name, .spl-modal-form-ask-email, .spl-modal-form-ask-help{
+		margin-bottom: 11px;
+		width: 100%;
+		font-size: 13px;
+		padding: 1px 16px;
+		display: flex;
+		position: relative;
+		align-items: center;
+		background-color: white;
+		border-radius: 3px;
+		border: 1px solid rgb(193, 203, 212);
+		box-shadow: 0 3px 7px 0 rgba(100, 105, 155, 0.2);
+
+		.spl-modal-input-name, .spl-modal-input-email, .spl-modal-input-help{
+			outline: none;
+			padding: 0;
+			height: 36px;
+			width: 100%;
+			display: block;
+			font-size: 13px;
+			z-index: 1;
+			background-color: transparent;
+			box-shadow: none;
+			border: none;
+		}
+	}
+
+	.spl-modal-form-ask-help{
+		margin-bottom: 10px;
+		padding-bottom: 36px;
+		padding-top: 12px;
+
+		.spl-modal-input-help{
+			min-height: 61px;
+			max-height: 200px;
+			width: 100%;
+			resize: vertical;
+			overflow-y: auto;
+		}
+
+		.spl-modal-form-fileUpload{
+			position: absolute;
+			bottom: 0px;
+			right: 2px;
+			
+			.spl-modal-form-fileUpload-button{
+				background-color: #fff;
+				padding: 0px 5px;
+				color: #c1cbd4;
+				outline: none;
+
+				.spl-modal-form-fileUpload-icon{
+					display: block;
+					width: 24px;
+					height: 24px;
+
+					svg{
+						width: 100%;
+						height: 100%;
+						display: block;
+						fill: #c1cbd4;
+					}
+				}
+			}
+		}
+
+		.spl-modal-form-fileUploaded-number{
+			position: absolute;
+			left: 12px;
+			bottom: 5px;
+
+			.spl-modal-form-fileUploaded-button{
+				outline: none;
+				min-width: 18px;
+				font-size: 13px;
+				font-weight: 500;
+				border-radius: 9999px;
+				padding: 3px 8px;
+				background: rgb(193, 203, 212);
+				color: white;
+
+				span{
+					display: inline-block;
+				}
+
+				.spl-modal-form-fileUploaded-text{
+					text-transform: capitalize;
+					margin-left: 3px;
+				}
+			}
+		}
+	}
+
+	.spl-modal-form-submit{
+		text-decoration: none !important;
+		font-weight: 600;
+		border-radius: 4px;
+		text-transform: inherit;
+		font-size: 14px;
+		background-color: #fc5d7d;
+		outline: none;
+		width: 100%;
+		color: white;
+		height: 48px;
+		padding: 0 1.5em;
+	}
+}
+
+.form-enter {
+	opacity: 0;
+}
+
+.form-enter-active {
+	opacity: 1;
+	transition: opacity 250ms linear 200ms;
+}
+
+.form-exit {
+	opacity: 1;
+}
+.form-exit-active {
+	opacity: 0;
+	transition: opacity 250ms linear 0s;
+}
+
+.file-uploaded-enter {
+	transform: scale(0);
+}
+
+.file-uploaded-enter-active {
+	transform: scale(1);
+	transition: all 150ms linear;
+}
+
+.file-uploaded-exit {
+	transform: scale(1);
+}
+.file-uploaded-exit-active {
+	transform: scale(0);
+	transition: all 20ms linear;
+}
+
+.spl-modal-form-fileUploadList{
+	position: absolute;
+	height: $height;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	background-color: rgba(57, 73, 86, 0.15);
+	z-index: 1024;
+
+	.spl-fileUploadList{
+		position: absolute;
+		bottom: 1px;
+		width: 100%;
+		margin: 0;
+		list-style: none;
+		padding: 0px 4px;
+
+		.spl-fileUploadSingleList{
+			line-height: 0;
+			margin: 0;
+			list-style: none;
+			padding: 15px 20px;
+			background-color: white;
+			color: #c1cbd4;
+			border-radius: 4px;
+			display: flex;
+			align-items: center;
+			margin-bottom: 5px;
+
+			span{
+				display: block;
+				width: 24px;
+				height: 24px;
+
+				svg{
+					height: 100%;
+					width: 100%;
+				}
+			}
+
+			.spl-fileUploadSingleList-name{
+				margin: 0;
+				font-size: 13px;
+				margin-left: 10px;
+				width: 90%;
+			}
+
+			.spl-fileUploadSingleList-remove-button{
+				outline: none;
+				background-color: transparent;
+				display: block;
+				width: 24px;
+				height: 24px;
+				padding: 0;
+
+				svg{
+					width: 100%;
+					height: 100%;
+					color: rgb(157, 31, 26);
+				}
+			}
+		}
+	}
+}
+
+.file-list-enter {
+	opacity: 0;
+}
+
+.file-list-enter-active {
+	opacity: 1;
+	transition: all 250ms linear;
+}
+
+.file-list-exit {
+	opacity: 1;
+}
+.file-list-exit-active {
+	opacity: 0;
+	transition: all 50ms linear;
+}

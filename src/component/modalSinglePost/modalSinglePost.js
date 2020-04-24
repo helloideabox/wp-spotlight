@@ -22,7 +22,7 @@ class ModalSinglePost extends Component{
 		this.handleClose = this.handleClose.bind( this );
 	}
 
-	componentDidMount() {
+	async componentDidMount() {
 		// window.addEventListener( 'scroll', this.handleScroll , true );
 	}
 
@@ -51,7 +51,7 @@ class ModalSinglePost extends Component{
 
 							<div className="spl-single-post-content-scrollable">
 								<article>
-									{ this.props.content }
+									{ __( this.props.content ) }
 								</article>
 							</div>
 						</div>
@@ -59,7 +59,7 @@ class ModalSinglePost extends Component{
 						<div className="spl-single-post-review-conatiner">
 							<div className="spl-single-post-review-content">
 								<p className="spl-single-post-review-text">
-									Did this answer to your question?
+									{ __( 'Did this answer to your question?' ) }
 								</p>
 
 								<div className="spl-single-post-review-reaction">

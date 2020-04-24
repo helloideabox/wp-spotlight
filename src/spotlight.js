@@ -39,6 +39,8 @@ class Spotlight extends Component {
 			isSearchResult: false,
 		}
 
+		this.avatar = [];
+
 		// For having reference of input element in dom.
 		this.inputText = React.createRef();
 
@@ -51,6 +53,14 @@ class Spotlight extends Component {
 		this.handleSearch = this.handleSearch.bind( this );
 		this.searchText = this.searchText.bind( this );
 		this.updatePost = this.updatePost.bind( this );
+	}
+
+	componentDidMount() {
+		for( var i=0; i<2; i++ ) {
+			this.avatar.push(
+				<div className="spl-form-heading-avatars"></div>
+			);
+		}
 	}
 
 	componentDidUpdate( prevProps, prevState ) {
@@ -143,7 +153,7 @@ class Spotlight extends Component {
 					// To trim the last '&' in the string.
 					query = query.substring( 0, query.length-1 );
 
-					fetch( `${siteName}/wp-json/spotlight/v1/posts/?${query}` )
+					fetch( `${ajax.siteName}/wp-json/spotlight/v1/posts/?${query}` )
 						.then( response => response.json() )
 						.then( data => {
 
@@ -196,14 +206,14 @@ class Spotlight extends Component {
 					classNames="modal"
 				>
 					<div className="spl-modal-container">
-						<div className={ "spl-modal-scroll-container " + ( this.state.isSinglePostOpen? 'overflow' : '' ) + ( this.state.isSearch? 'spl-modal-search-container' : '' )}>
+						<div className={ "spl-modal-scroll-container " + ( this.state.isSinglePostOpen? 'overflow' : '' ) + ( this.state.isSearch? 'spl-modal-search-container' : '' ) + ' ' + ( this.state.isAnswer? 'spl-modal-scroll-answer' : 'spl-modal-scroll-form' )}>
 							<ModalHeader
 								onClick={ this.handleClick }
 								isAnswer={ this.state.isAnswer }
 								isSearch = { this.state.isSearch }
 							/>
 
-							<div className={ this.state.isAnswer? ! this.state.isSearch?"spl-heading-post-container" : 'spl-heading-search-container' : "spl-heading-form-container" }>
+							<div className={ this.state.isAnswer? ! this.state.isSearch?"spl-heading-post-container" : 'spl-heading-search-container' : "spl-heading-form-wrap" }>
 								{
 									this.state.isAnswer?
 										! this.state.isSearch?
@@ -213,17 +223,29 @@ class Spotlight extends Component {
 										:
 										null
 									:
-									<div></div>
+									<div className="spl-heading-form-container">
+										<div className="spl-heading-form-content">
+											{ this.avatar }
+										</div>
+
+										<h2 className="spl-form-heading">
+											{ __( 'Let’s begin with a few questions' ) }
+										</h2>
+
+										<h4 className="spl-form-sub-heading">
+											{ __( 'We usually respond in a few hours' ) }
+										</h4>
+									</div>
 								}
 							</div>
 							
-							<main className="spl-main-container">
+							<main className={ "spl-main-container " + ( this.state.isAnswer? 'spl-main-answer-container' : 'spl-main-form-container' ) }>
 							{
 								this.state.isAnswer?
 									this.state.isSearch?
 										this.state.isSearchResult?
 											<ModalSearch
-												onClick={ this.handlePost }
+												onSinglePost={ this.handlePost }
 												searchResult={ this.state.search_posts }
 												isSearchResult={ this.state.isSearchResult }
 												onClick={ this.handleClick }

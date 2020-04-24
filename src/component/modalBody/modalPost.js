@@ -54,7 +54,7 @@ class ModalPost extends Component{
 				}
 
 				// fetching from wp api.
-				fetch( `${siteName}/wp-json/spotlight/v1/posts/?${query}` )
+				fetch( `${ajax.siteName}/wp-json/spotlight/v1/posts/?${query}` )
 					.then( response => response.json() )
 					.then( data => {
 

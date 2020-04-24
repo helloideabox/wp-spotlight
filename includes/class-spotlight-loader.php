@@ -37,9 +37,13 @@ class  Spotlight_Loader {
 		// Action to register setting for get_option function.
 		add_action( 'init', array( $this, 'register_plugin_settings' ) );
 
-		// Action to handle the ajax response.
+		// Action to handle the ajax for admin page response.
 		add_action( 'wp_ajax_handle_submit', array( $this, 'handle_form_submit' ) );
 		add_action( 'wp_ajax_nopriv_handle_submit', array( $this, 'handle_form_submit' ) );
+
+		// Action to handle the ajax for frontend response.
+		add_action( 'wp_ajax_handle_ask', array( $this, 'handle_form_ask' ) );
+		add_action( 'wp_ajax_nopriv_handle_ask', array( $this, 'handle_form_ask' ) );
 	}
 
 	/**
@@ -50,7 +54,15 @@ class  Spotlight_Loader {
 		// Enqueueing build script and styles.
 		wp_enqueue_style( 'spl-react-style', SPOTLIGHT_URL . 'build/admin.css', array( 'wp-components' ), SPOTLIGHT_VERSION, false );
 		wp_enqueue_script( 'spl-react-script', SPOTLIGHT_URL . 'build/admin.js', array( 'wp-components', 'wp-element', 'wp-api', 'wp-i18n' ), SPOTLIGHT_VERSION, true );
-		wp_localize_script( 'spl-react-script', 'siteName', get_site_url() );
+		wp_localize_script(
+			'spl-react-script',
+			'ajax',
+			array(
+				'siteName' => get_site_url(),
+				'ajax_url' => admin_url( 'admin-ajax.php' ),
+				'nonce'    => wp_create_nonce( 'ajax_nonce' ),
+			)
+		);
 	}
 
 	/**
@@ -120,6 +132,7 @@ class  Spotlight_Loader {
 				$query->the_post();
 
 				$post_type_data[] = array(
+					'id'        => get_the_ID(),
 					'title'     => get_the_title(),
 					'excerpt'   => substr( get_the_excerpt(), 0, 300 ),  // custom excerpt length.
 					'content'   => get_the_content(),
@@ -210,6 +223,83 @@ class  Spotlight_Loader {
 
 		$status = update_option( 'spl_post_types', $query );
 		print_r( $status );
+
+		wp_die();
+	}
+
+
+	/**
+	 * Handling form submit.
+	 *
+	 * @return void
+	 */
+	public function handle_form_ask() {
+
+		// Checking for ajax nonce.
+		if ( check_ajax_referer( 'ajax_nonce', 'security' ) ) {
+
+			// Checking for file type object.
+			if ( isset( $_FILES['files'] ) ) {
+				$file = $_FILES['files'];
+
+				// array of variables of multiple uploaded file.
+				$file_names  = $file['name'];
+				$file_errors = $file['error'];
+				$file_tmps   = $file['tmp_name'];
+
+				// Taking file extension for comparing.
+				foreach ( $file_names as $file_name ) {
+					$file_exts    = explode( '.', $file_name );
+					$file_check[] = strtolower( end( $file_exts ) );
+				}
+
+				// Extension to be compared with.
+				$file_ext_stored = array( 'png', 'jpg', 'jpeg' );
+
+				// Getting path for uploads directory for WordPress.
+				$upload_dir = wp_upload_dir();
+
+				// Looping through each file uploaded and moving to destination folder.
+				foreach ( $file_names as $index => $value ) {
+
+					// Checking if the directory exits or not.
+					if ( in_array( $file_check[ $index ], $file_ext_stored, true ) ) {
+						if ( ! is_dir( $upload_dir['basedir'] . '/spotlight' ) ) {
+							mkdir( $upload_dir['basedir'] . '/spotlight' );
+						}
+
+						// Moving uploaded file from tmp to destination folder. 
+						$destination_file = $upload_dir['basedir'] . '/spotlight/' . $file_names[ $index ];
+						move_uploaded_file( $file_tmps[ $index ], $destination_file );
+					}
+				}
+			}
+
+			$name  = '';
+			$email = '';
+			$query = 'hgfhg';
+
+			if ( isset( $_POST['name'] ) ) {
+				$name = sanitize_text_field( wp_unslash( $_POST['name'] ) );
+			}
+
+			if ( isset( $_POST['email'] ) ) {
+				$email = sanitize_text_field( wp_unslash( $_POST['email'] ) );
+			}
+
+			if ( isset( $_POST['query'] ) ) {
+				$query = sanitize_text_field( wp_unslash( $_POST['query'] ) );
+			}
+
+			$to      = 'adarshshah01@gmail.com';
+			$subject = 'Queries Regarding Spotlight';
+
+			if ( wp_mail( $to, $subject, $query ) ) {
+				echo 'Mail sent';
+			} else {
+				echo 'Mail not sent';
+			}
+		}
 
 		wp_die();
 	}

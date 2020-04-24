@@ -25,6 +25,7 @@
     "webpack-cli": "^3.3.11"
   },
   "dependencies": {
+    "axios": "^0.19.2",
     "html-react-parser": "^0.10.3",
     "react": "^16.13.1",
     "react-addons-css-transition-group": "^15.6.2",
