@@ -24,6 +24,9 @@ class ModalPost extends Component{
 			name: '',
 			email: '',
 			query: '',
+			isFormSubmitLoader: false,
+			success: false,
+			isSuccessMsg: false,
 			files: [],
 			isfilesList: false,
 			formErr:{
@@ -33,7 +36,7 @@ class ModalPost extends Component{
 			}
 		}
 
-		this.err = true;
+		this.err = false;
 		this.fileUpload = React.createRef();
 
 		this.handleChange = this.handleChange.bind( this );
@@ -72,7 +75,7 @@ class ModalPost extends Component{
 	}
 
 	handleFormValidate() {
-		console.log( 'adadsa' );
+
 		let {formErr} = this.state;
 
 		// Reseting values.
@@ -83,26 +86,26 @@ class ModalPost extends Component{
 		if( this.state.name.length === 0 ) {
 			formErr.nameErr = '*Please enter your name.';
 			this.setState( { formErr } );
-			return false;
+			return true;
 		}
 		
 		if( this.state.email.length === 0 ) {
 			formErr.emailErr = '*Please enter your email.';
 			this.setState( { formErr } );
-			return false;
+			return true;
 		}else if( ! this.state.email.match( /^(\S+@\S+\.\S+)$/ ) ) {
 			formErr.emailErr = '*Email is not valid.';
 			this.setState( { formErr } );
-			return false;
+			return true;
 		}
 
 		if( this.state.query.length === 0 ) {
 			formErr.queryErr = '*Please enter your suggestions 	or questions.';
 			this.setState( { formErr } );
-			return false;
+			return true;
 		}
 
-		return true;
+		return false;
 		
 	}
 
@@ -112,7 +115,7 @@ class ModalPost extends Component{
 
 		this.err = this.handleFormValidate();
 
-		if( this.err ) {
+		if( ! this.err ) {
 			let form_data = new FormData();
 			form_data.append( 'action', 'handle_ask' );
 			form_data.append( 'security', ajax.nonce );
@@ -125,10 +128,31 @@ class ModalPost extends Component{
 				form_data.append( 'files[]', file );
 			});
 
+			this.setState( { isFormSubmitLoader: true } );
+
 			axios.post( ajax.ajax_url, form_data )
 			.then(  response => {
 				console.log(response.data);
-				console.log( 'submitted' );
+				this.setState( { isFormSubmitLoader: false } );
+				this.setState( { isSuccessMsg: true } );
+
+				if( response.data === 'success' ) {
+					this.setState( { success: true } );
+				} else{
+					this.setState( { success: false } );
+				}
+
+				// Clearing the form after the response.
+				setTimeout( () => {
+					this.setState( { isSuccessMsg:false } );
+				}, 3000 );
+
+				// Fading the success response.
+				setTimeout( () => {
+					this.setState( { name: '' } );
+					this.setState( { email: '' } );
+					this.setState( { query: '' } );
+				}, 100 );
 			} );
 		}
 	}
@@ -179,9 +203,11 @@ class ModalPost extends Component{
 							{
 								this.state.formErr.nameErr?
 								<small className="spl-modal-form-name-err">
+									<i>
 									{
 										this.state.formErr.nameErr
 									}
+									</i>
 								</small>
 								:
 								null
@@ -193,9 +219,11 @@ class ModalPost extends Component{
 							{
 								this.state.formErr.emailErr?
 								<small className="spl-modal-form-email-err">
+									<i>
 									{
 										this.state.formErr.emailErr
 									}
+									</i>
 								</small>
 								:
 								null
@@ -240,16 +268,40 @@ class ModalPost extends Component{
 							{
 								this.state.formErr.queryErr?
 								<small className="spl-modal-form-query-err">
+									<i>
 									{
 										this.state.formErr.queryErr
 									}
+									</i>
 								</small>
 								:
 								null
 							}
 
-							
-							<input className="spl-modal-form-submit" type="submit" value={ __( 'Send a message' ) } onClick={ this.handleSubmit } />
+							<div className="spl-modal-form-submit-wrap">
+								<input className={ "spl-modal-form-submit " + ( this.state.isSuccessMsg? 'not-allowed' : '' ) } disabled={ this.state.isSuccessMsg } type="submit" value={ __( 'Send a message' ) } onClick={ this.handleSubmit } />
+
+								{
+									this.state.isFormSubmitLoader?
+										<span className="spl-modal-form-submit-loader">
+											<svg  xmlns="http://www.w3.org/2000/svg" version="1.0" width="64px" height="64px" viewBox="0 0 128 128">
+												<g transform="rotate(180 64 64)">
+													<circle cx="16" cy="64" r="16" fill="#fff" fill-opacity="1"/>
+													<circle cx="16" cy="64" r="14.344" fill="#fff" fill-opacity="1" transform="rotate(45 64 64)"/>
+													<circle cx="16" cy="64" r="12.531" fill="#fff" fill-opacity="1" transform="rotate(90 64 64)"/>
+													<circle cx="16" cy="64" r="10.75" fill="#fff" fill-opacity="1" transform="rotate(135 64 64)"/>
+													<circle cx="16" cy="64" r="10.063" fill="#fff" fill-opacity="1" transform="rotate(180 64 64)"/>
+													<circle cx="16" cy="64" r="8.063" fill="#fff" fill-opacity="1" transform="rotate(225 64 64)"/>
+													<circle cx="16" cy="64" r="6.438" fill="#fff" fill-opacity="1" transform="rotate(270 64 64)"/>
+													<circle cx="16" cy="64" r="5.375" fill="#fff" fill-opacity="1" transform="rotate(315 64 64)"/>
+													<animateTransform attributeName="transform" type="rotate" values="0 64 64;315 64 64;270 64 64;225 64 64;180 64 64;135 64 64;90 64 64;45 64 64" calcMode="discrete" dur="720ms" repeatCount="indefinite"/>
+												</g>
+											</svg>
+										</span>
+										:
+										null
+								}
+							</div>
 							
 						</form>
 					</div>
@@ -289,6 +341,49 @@ class ModalPost extends Component{
 								} )
 							}
 						</ul>
+					</div>
+				</CSSTransition>
+
+				{
+					this.state.isFormSubmitLoader?
+						<div className="spl-modal-form-submit-response-background"></div>
+						:
+						null
+				}
+
+				<CSSTransition
+					in={ this.state.isSuccessMsg }
+					unmountOnExit
+					timeout={250}
+					classNames="response"
+				>
+					<div className="spl-modal-form-submit-response">
+						{
+							this.state.success?
+								<div className="spl-modal-form-submit-response-success">
+									<span className="spl-modal-form-submit-response-icon">
+										<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+											<path d="M9.8 15.2l-2-2c-.4-.4-.4-1 0-1.4s1-.4 1.4 0l1.3 1.3 4.3-4.3c.4-.4 1-.4 1.4 0s.4 1 0 1.4l-5 5c-.2.2-.5.3-.7.3-.3 0-.5-.1-.7-.3z"></path>
+										</svg>
+									</span>
+									
+									<span className="spl-modal-form-submit-response-success-msg">
+										{ __( 'Thank you. We will get back to you soon.' ) }
+									</span>
+								</div>
+								:
+								<div className="spl-modal-form-submit-response-failed">
+									<span className="spl-modal-form-submit-response-icon">
+										<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+											<path fill-rule="evenodd" d="M13.414 12l2.293-2.293a.999.999 0 10-1.414-1.414L12 10.586 9.707 8.293a.999.999 0 10-1.414 1.414L10.586 12l-2.293 2.293a.999.999 0 101.414 1.414L12 13.414l2.293 2.293a.997.997 0 001.414 0 .999.999 0 000-1.414L13.414 12z"></path>
+										</svg>
+									</span>
+
+									<span className="spl-modal-form-submit-response-failed-msg">
+										{ __( 'Please try again.' ) }
+									</span>
+								</div>
+						}
 					</div>
 				</CSSTransition>
 			</Fragment>

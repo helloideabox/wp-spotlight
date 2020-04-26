@@ -69,9 +69,9 @@ class ModalSearch extends Component{
 											{ __( 'We couldn’t find any articles that match your search. Try searching a broader term, or ' ) }
 										</span>
 
-										<span className="spl-modal-posts-search-lists-none-getInTouch">
+										<a className="spl-modal-posts-search-lists-none-getInTouch" onClick={ () => { this.handleAsk( false ) } }>
 											{ __( 'Get in touch.' ) }
-										</span>
+										</a>
 									</p>
 								</div>
 							</li>

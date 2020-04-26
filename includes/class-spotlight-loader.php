@@ -277,7 +277,7 @@ class  Spotlight_Loader {
 
 			$name  = '';
 			$email = '';
-			$query = 'hgfhg';
+			$query = '';
 
 			if ( isset( $_POST['name'] ) ) {
 				$name = sanitize_text_field( wp_unslash( $_POST['name'] ) );
@@ -292,12 +292,13 @@ class  Spotlight_Loader {
 			}
 
 			$to      = 'adarshshah01@gmail.com';
-			$subject = 'Queries Regarding Spotlight';
+			$subject = 'Queries or Suggestion Regarding Spotlight';
+			$headers = array( 'From: ' . $name . ' <' . $email . '>' );
 
-			if ( wp_mail( $to, $subject, $query ) ) {
-				echo 'Mail sent';
+			if ( wp_mail( $to, $subject, $query, $headers ) ) {
+				echo 'success';
 			} else {
-				echo 'Mail not sent';
+				echo 'failed';
 			}
 		}
 
