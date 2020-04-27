@@ -11,6 +11,10 @@ $height: 588px;
 	overflow: hidden !important;
 }
 
+.height{
+	max-height: 99% !important;
+}
+
 .spl-button-container{
 	width: 60px;
 	height: 60px;
@@ -200,7 +204,6 @@ $height: 588px;
 	max-height: 100%;
 
 	.spl-main-form-container{
-		height: calc( #{$height} - 48px - 153px );
 		padding: 10px 6px;
 	}
 }
@@ -266,7 +269,7 @@ $height: 588px;
 .spl-main-container{
 	background-color: white;
 	width: 100%;
-	height: calc( #{$height} - 48px - 71px - 59px );
+	//height: calc( #{$height} - 48px - 71px - 59px );
 	// position: relative;
 }
 

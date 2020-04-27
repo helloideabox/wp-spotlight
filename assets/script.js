@@ -1,5 +1,6 @@
 // Switching between the tabs.
 jQuery( document ).ready( function() {
+
 	jQuery( '.spl-nav-tab' ).click( function() {
 
 		if( jQuery( this ).hasClass( 'spl-nav-tab-active' ) ){
@@ -27,9 +28,14 @@ jQuery( document ).ready( function() {
 		
 		// Ajax request.
 		jQuery.post( settings.ajax_url, data, function( response ) {
-			alert( response );
+			if( response == 'success' ) {
+				jQuery( '#spl-message' ).css( 'display', 'block' );
+			}
 		} )
 		console.log( form.serialize() );
+	} );
 
-	} )
+	jQuery( '.spl-notice-dismiss' ).click( function() {
+		jQuery( '#spl-message' ).css( 'display', 'none' );
+	} );
 } );

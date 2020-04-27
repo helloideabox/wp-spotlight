@@ -22,54 +22,20 @@ class ModalPost extends Component{
 		this.state = {
 			posts:[],
 			isPostFetch: false,
-			post_types: [],
 		}
 
 		this.handleSinglePost = this.handleSinglePost.bind( this );
 	}
 
-	async componentDidMount() {
+	componentDidMount() {
 
-		// Getting data from setting model api.
-		wp.api.loadPromise.then( () => {
-			this.widget = new wp.api.models.Settings();
-
-			this.widget.fetch().then( response => {
-
-				let { post_types } = this.state;
-				post_types.push( ...response.spl_post_types );
-
-				this.setState( { post_types } );
-
-				let query = '';
-
-				// Making query for fetch function.
-				if( post_types.length > 0 ) {
-					post_types.map( value => {
-						query += 'post_types[]=' + value + '&';
-					} );
-
-					// To trim the last '&' in the string.
-					query = query.substring( 0, query.length-1 );
-				}
-
-				// fetching from wp api.
-				fetch( `${ajax.siteName}/wp-json/spotlight/v1/posts/?${query}` )
-					.then( response => response.json() )
-					.then( data => {
-
-						let {posts} = this.state;
-						posts.push( ...data );
-						this.setState( { posts } );
-						this.setState( { isPostFetch: true } );
-
-						this.props.onPostUpdate( this.state.posts );
-					} )
-					.catch( error => {
-						console.log( error );
-					} )
-			} );
-		} );
+		let { posts } = this.state;
+		setTimeout( () => {
+			posts.push( ...this.props.posts );
+		
+			this.setState( { posts } );
+			this.setState( { isPostFetch: this.props.isPostFetch } );
+		}, 400 );
 	}
 
 
@@ -90,13 +56,13 @@ class ModalPost extends Component{
 							this.state.posts.length == 0 && this.state.isPostFetch?
 							<li className="spl-modal-posts-lists-none">{ __( 'No post created till now.' ) }</li>
 							:
+							this.state.isPostFetch?
 							Object.keys( this.state.posts ).map( ( index ) => {
 								return(
 									<CSSTransition
 										key={index}
 										timeout={300}
 										classNames="post"
-										enter={true}
 									>
 									<li className="spl-single-post-container" key={ index } style={{ 'transition-delay': `${(parseInt(index)+1) * 150}ms` }}>
 										<a className="spl-single-post" onClick={ () => this.handleSinglePost( index, true ) }>
@@ -111,45 +77,11 @@ class ModalPost extends Component{
 								</CSSTransition>	
 								)
 							} )
+							:
+							null
 						}
 					</TransitionGroup>
 				</ul>
-
-				<CSSTransition
-					in={ ! this.state.isPostFetch }
-					unmountOnExit
-					timeout={150}
-					classNames="loading"
-				>
-					<div>
-						<div className="spl-posts-loading">
-							<h2 className="spl-posts-loading-heading"></h2>
-							<div className="spl-posts-loading-text-line"></div>
-							<div className="spl-posts-loading-text-line"></div>
-							<div className="spl-posts-loading-text-line"></div>
-							<div className="spl-posts-loading-text-line"></div>
-							<div className="spl-posts-loading-text-line"></div>
-						</div>
-
-						<div className="spl-posts-loading">
-							<h2 className="spl-posts-loading-heading"></h2>
-							<div className="spl-posts-loading-text-line"></div>
-							<div className="spl-posts-loading-text-line"></div>
-							<div className="spl-posts-loading-text-line"></div>
-							<div className="spl-posts-loading-text-line"></div>
-							<div className="spl-posts-loading-text-line"></div>
-						</div>
-
-						<div className="spl-posts-loading">
-							<h2 className="spl-posts-loading-heading"></h2>
-							<div className="spl-posts-loading-text-line"></div>
-							<div className="spl-posts-loading-text-line"></div>
-							<div className="spl-posts-loading-text-line"></div>
-							<div className="spl-posts-loading-text-line"></div>
-							<div className="spl-posts-loading-text-line"></div>
-						</div>
-					</div>
-				</CSSTransition>
 			</div>
 			</Fragment>
 		)

@@ -1,5 +1,6 @@
 .spl-settings-wrap{
 	margin: 10px 20px 0 2px;
+	transition: all 200ms ease 0s;
 }
 
 .spl-settings-wrap > h1 {
@@ -48,4 +49,47 @@
 
 .spl-active{
 	display: block;
+}
+
+#spl-message{
+	background: #fff;
+    border: 1px solid #ccd0d4;
+    border-left-width: 4px;
+    box-shadow: 0 1px 1px rgba(0,0,0,.04);
+    margin: 5px 0px 15px;
+	padding: 1px 12px;
+	border-left-color: #46b450;
+	padding-right: 38px;
+    position: relative;
+	transition: all 200ms ease-in;
+	display: none;
+}
+
+#spl-message > p{
+	margin: 8px;
+	line-height: 1.4em;
+}
+
+.spl-notice-dismiss{
+	position: absolute;
+    top: 0;
+    right: 1px;
+    border: none;
+    margin: 0;
+    padding: 9px;
+    background: 0 0;
+    color: #72777c;
+    cursor: pointer;
+}
+
+.spl-notice-dismiss::before{
+	background: 0 0;
+    color: #72777c;
+    content: "\f153";
+    display: block;
+    font: normal 16px/20px dashicons;
+    height: 20px;
+    text-align: center;
+    width: 20px;
+    -webkit-font-smoothing: antialiased;
 }

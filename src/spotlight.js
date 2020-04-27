@@ -29,7 +29,9 @@ class Spotlight extends Component {
 			isModalShow: false,
 			isAnswer: true,
 			isFocus: false,
+			post_types: [],
 			posts: [],
+			isPostFetch: false,
 			search_posts: [],
 			isFocusAnimation: false,
 			isSinglePostOpen: false,
@@ -37,6 +39,8 @@ class Spotlight extends Component {
 			isSearch: false,
 			query: '',
 			isSearchResult: false,
+			enable_search_box: true,
+			enable_contact_tab: true,
 		}
 
 		this.avatar = [];
@@ -52,10 +56,52 @@ class Spotlight extends Component {
 		this.handleClose = this.handleClose.bind( this );
 		this.handleSearch = this.handleSearch.bind( this );
 		this.searchText = this.searchText.bind( this );
-		this.updatePost = this.updatePost.bind( this );
 	}
 
-	componentDidMount() {
+	async componentDidMount() {
+
+		// Getting data from setting model api.
+		wp.api.loadPromise.then( () => {
+			this.widget = new wp.api.models.Settings();
+
+			this.widget.fetch().then( response => {
+				console.log( response );
+
+				this.setState( { enable_search_box: response.spl_enable_search_box } );
+				this.setState( { enable_contact_tab: response.spl_enable_contact_tab } );
+
+				let { post_types } = this.state;
+				post_types.push( ...response.spl_post_types );
+
+				this.setState( { post_types } );
+
+				let query = '';
+
+				// Making query for fetch function.
+				if( post_types.length > 0 ) {
+					post_types.map( value => {
+						query += 'post_types[]=' + value + '&';
+					} );
+
+					// To trim the last '&' in the string.
+					query = query.substring( 0, query.length-1 );
+				}
+
+				// fetching from wp api.
+				fetch( `${ajax.siteName}/wp-json/spotlight/v1/posts/?${query}` )
+					.then( response => response.json() )
+					.then( data => {
+						let {posts} = this.state;
+						posts.push( ...data );
+						this.setState( { posts } );
+						this.setState( { isPostFetch: true } );
+					} )
+					.catch( error => {
+						console.log( error );
+					} )
+			} );
+		} );
+
 		for( var i=0; i<2; i++ ) {
 			this.avatar.push(
 				<div className="spl-form-heading-avatars"></div>
@@ -115,14 +161,6 @@ class Spotlight extends Component {
 	handleClose( bool ) {
 		this.setState( { isSinglePostOpen: bool } );
 		this.inputText.current.focus();
-	}
-
-	updatePost( post ) {
-		let { posts } = this.state;
-		posts = [];
-		posts.push( ...post );
-
-		this.setState( { posts } );
 	}
 
 	searchText( e ) {
@@ -206,11 +244,12 @@ class Spotlight extends Component {
 					classNames="modal"
 				>
 					<div className="spl-modal-container">
-						<div className={ "spl-modal-scroll-container " + ( this.state.isSinglePostOpen? 'overflow' : '' ) + ( this.state.isSearch? 'spl-modal-search-container' : '' ) + ' ' + ( this.state.isAnswer? 'spl-modal-scroll-answer' : 'spl-modal-scroll-form' )}>
+						<div className={ "spl-modal-scroll-container " + ( this.state.isSinglePostOpen? 'overflow' : '' ) + ( this.state.isSearch? 'spl-modal-search-container' : '' ) + ' ' + ( this.state.isAnswer? 'spl-modal-scroll-answer' : 'spl-modal-scroll-form' ) + ' ' + ( this.state.enable_search_box? '' : 'height' ) }>
 							<ModalHeader
 								onClick={ this.handleClick }
 								isAnswer={ this.state.isAnswer }
 								isSearch = { this.state.isSearch }
+								enable_contact_tab={ this.state.enable_contact_tab }
 							/>
 
 							<div className={ this.state.isAnswer? ! this.state.isSearch?"spl-heading-post-container" : 'spl-heading-search-container' : "spl-heading-form-wrap" }>
@@ -280,30 +319,63 @@ class Spotlight extends Component {
 											</div>
 										</div>
 									:
+									this.state.isPostFetch?
 									<ModalPost 
 										posts={ this.state.posts }
+										isPostFetch={ this.state.isPostFetch }
 										onClick={ this.handlePost }
-										onPostUpdate={ this.updatePost }
 									/>
+									:
+									<div className="spl-posts-loading-container">
+										<div className="spl-posts-loading">
+											<h2 className="spl-posts-loading-heading"></h2>
+											<div className="spl-posts-loading-text-line"></div>
+											<div className="spl-posts-loading-text-line"></div>
+											<div className="spl-posts-loading-text-line"></div>
+											<div className="spl-posts-loading-text-line"></div>
+											<div className="spl-posts-loading-text-line"></div>
+										</div>
+
+										<div className="spl-posts-loading">
+											<h2 className="spl-posts-loading-heading"></h2>
+											<div className="spl-posts-loading-text-line"></div>
+											<div className="spl-posts-loading-text-line"></div>
+											<div className="spl-posts-loading-text-line"></div>
+											<div className="spl-posts-loading-text-line"></div>
+											<div className="spl-posts-loading-text-line"></div>
+										</div>
+
+										<div className="spl-posts-loading">
+											<h2 className="spl-posts-loading-heading"></h2>
+											<div className="spl-posts-loading-text-line"></div>
+											<div className="spl-posts-loading-text-line"></div>
+											<div className="spl-posts-loading-text-line"></div>
+											<div className="spl-posts-loading-text-line"></div>
+											<div className="spl-posts-loading-text-line"></div>
+										</div>
+									</div>
 								:
 								<ModalForm />
 							}
 							</main>
 
 							{
-								this.state.isAnswer?
-								<div className={ "spl-search-container " + ( this.state.isFocus? 'is-focussed' : 'not-focussed' ) }>
-									<input type="text" ref={ this.inputText } placeholder="What can we help you with?" className="spl-search-text" onFocus={ this.handleFocus } onBlur={ this.handleBlur } onChange={ this.searchText }/>
+								this.state.enable_search_box?
+									this.state.isAnswer?
+									<div className={ "spl-search-container " + ( this.state.isFocus? 'is-focussed' : 'not-focussed' ) }>
+										<input type="text" ref={ this.inputText } placeholder="What can we help you with?" className="spl-search-text" onFocus={ this.handleFocus } onBlur={ this.handleBlur } onChange={ this.searchText }/>
 
-									<div className="spl-search-button-container">
-										<button className="spl-search-button" onClick={ this.handleSearch }>
-											<svg height="20px" width="20px">
-												<path fill-rule="evenodd" d="M10.5 17.917c1.7 0 3.3-.597 4.5-1.492l4.3 4.277c.2.199.5.298.7.298.2 0 .5-.1.7-.298.4-.398.4-.995 0-1.393l-4.2-4.375c1-1.293 1.5-2.785 1.5-4.475C18 6.38 14.6 3 10.5 3S3 6.381 3 10.459c0 4.077 3.4 7.458 7.5 7.458zm0-12.928c3 0 5.5 2.486 5.5 5.47 0 2.983-2.5 5.47-5.5 5.47S5 13.441 5 10.458c0-2.984 2.5-5.47 5.5-5.47z">
-												</path>
-											</svg>
-										</button>
+										<div className="spl-search-button-container">
+											<button className="spl-search-button" onClick={ this.handleSearch }>
+												<svg height="20px" width="20px">
+													<path fill-rule="evenodd" d="M10.5 17.917c1.7 0 3.3-.597 4.5-1.492l4.3 4.277c.2.199.5.298.7.298.2 0 .5-.1.7-.298.4-.398.4-.995 0-1.393l-4.2-4.375c1-1.293 1.5-2.785 1.5-4.475C18 6.38 14.6 3 10.5 3S3 6.381 3 10.459c0 4.077 3.4 7.458 7.5 7.458zm0-12.928c3 0 5.5 2.486 5.5 5.47 0 2.983-2.5 5.47-5.5 5.47S5 13.441 5 10.458c0-2.984 2.5-5.47 5.5-5.47z">
+													</path>
+												</svg>
+											</button>
+										</div>
 									</div>
-								</div>
+									:
+									null
 								:
 								null
 							}
@@ -320,7 +392,8 @@ class Spotlight extends Component {
 									this.state.isSearch?
 										this.state.search_posts.length > 0 ?
 											<ModalSinglePost 
-												content={ parse( __( this.state.search_posts[this.state.singlePostIndex].content) ) }
+												content={ parse( __( this.state.search_posts[this.state.singlePostIndex].content ) ) }
+												post-id={ this.state.search_posts[this.state.singlePostIndex].id }
 												onClick={ this.handleClose }
 											/>
 											:
@@ -328,7 +401,8 @@ class Spotlight extends Component {
 										:
 										this.state.posts.length > 0 ?
 											<ModalSinglePost 
-												content={ parse( __( this.state.posts[this.state.singlePostIndex].content) ) }
+												content={ parse( __( this.state.posts[this.state.singlePostIndex].content ) ) }
+												post_id={ this.state.posts[this.state.singlePostIndex].id }
 												onClick={ this.handleClose }
 											/>
 											:

@@ -37,14 +37,19 @@ class ModalHeader extends Component{
 					</div>
 					<div className="spl-answer">{ __('Answers') }</div>
 				</a>
-				<a className={"spl-navigation " + ( this.props.isAnswer? 'spl-inactive' : 'spl-active' ) } onClick={ () => { this.handleAsk( false ) } }>
-					<div className="spl-navigation-icon">
-						<svg height="24px" width="24px">
-							<path fill-rule="evenodd" d="M18.003 12.006a3 3 0 01-2.993 2.997h-.007a.997.997 0 00-.707.293l-2.294 2.293-2.292-2.291a.997.997 0 00-.707-.293h-.007c-.8 0-1.551-.311-2.117-.876A2.978 2.978 0 016 12.008v-3.01a3 3 0 012.995-2.996L15.005 6h.001c.8 0 1.553.311 2.119.877.566.566.878 1.318.878 2.119v3.01zM15.006 4h-.002l-6.009.002A5.002 5.002 0 004 8.998v3.01c0 1.336.521 2.592 1.466 3.536a4.962 4.962 0 003.105 1.443l2.724 2.724a.997.997 0 001.414 0l2.727-2.726a5.005 5.005 0 004.567-4.979v-3.01c0-1.335-.52-2.59-1.464-3.533A4.964 4.964 0 0015.006 4z"></path>
-						</svg>
-					</div>
-					<div className="spl-ask">{ __('Ask') }</div>
-				</a>
+				{
+					this.props.enable_contact_tab?
+					<a className={"spl-navigation " + ( this.props.isAnswer? 'spl-inactive' : 'spl-active' ) } onClick={ () => { this.handleAsk( false ) } }>
+						<div className="spl-navigation-icon">
+							<svg height="24px" width="24px">
+								<path fill-rule="evenodd" d="M18.003 12.006a3 3 0 01-2.993 2.997h-.007a.997.997 0 00-.707.293l-2.294 2.293-2.292-2.291a.997.997 0 00-.707-.293h-.007c-.8 0-1.551-.311-2.117-.876A2.978 2.978 0 016 12.008v-3.01a3 3 0 012.995-2.996L15.005 6h.001c.8 0 1.553.311 2.119.877.566.566.878 1.318.878 2.119v3.01zM15.006 4h-.002l-6.009.002A5.002 5.002 0 004 8.998v3.01c0 1.336.521 2.592 1.466 3.536a4.962 4.962 0 003.105 1.443l2.724 2.724a.997.997 0 001.414 0l2.727-2.726a5.005 5.005 0 004.567-4.979v-3.01c0-1.335-.52-2.59-1.464-3.533A4.964 4.964 0 0015.006 4z"></path>
+							</svg>
+						</div>
+						<div className="spl-ask">{ __('Ask') }</div>
+					</a>
+					:
+					null
+				}
 
 				{
 					this.props.isSearch?

@@ -119,26 +119,29 @@ class  Spotlight_Loader {
 
 		$post_type_data = array();
 
-		$args = array(
-			'post_type'     => $request['post_types'],
-			'post_status'   => 'publish',
-			'post_per_page' => -1,
-		);
+		// Checking for any post type selected in settings.
+		if ( ! empty( $request['post_types'] ) ) {
+			$args = array(
+				'post_type'      => $request['post_types'],
+				'post_status'    => 'publish',
+				'posts_per_page' => get_option( 'spl_number_of_posts' ),
+			);
 
-		$query = new WP_Query( $args );
+			$query = new WP_Query( $args );
 
-		if ( $query->have_posts() ) {
-			while ( $query->have_posts() ) :
-				$query->the_post();
+			if ( $query->have_posts() ) {
+				while ( $query->have_posts() ) :
+					$query->the_post();
 
-				$post_type_data[] = array(
-					'id'        => get_the_ID(),
-					'title'     => get_the_title(),
-					'excerpt'   => substr( get_the_excerpt(), 0, 300 ),  // custom excerpt length.
-					'content'   => get_the_content(),
-					'permalink' => get_permalink(),
-				);
-			endwhile;
+					$post_type_data[] = array(
+						'id'        => get_the_ID(),
+						'title'     => get_the_title(),
+						'excerpt'   => substr( get_the_excerpt(), 0, 300 ),  // custom excerpt length.
+						'content'   => get_the_content(),
+						'permalink' => get_permalink(),
+					);
+				endwhile;
+			}
 		}
 
 		return $post_type_data;
@@ -202,6 +205,36 @@ class  Spotlight_Loader {
 				'default'      => array( 'post' ),
 			)
 		);
+
+		register_setting(
+			'spl-settings-group',
+			'spl_enable_search_box',
+			array(
+				'type'         => 'boolean',
+				'show_in_rest' => true,
+				'default'      => true,
+			)
+		);
+
+		register_setting(
+			'spl-settings-group',
+			'spl_enable_contact_tab',
+			array(
+				'type'         => 'boolean',
+				'show_in_rest' => true,
+				'default'      => true,
+			)
+		);
+
+		register_setting(
+			'spl-settings-group',
+			'spl_number_of_posts',
+			array(
+				'type'         => 'integer',
+				'show_in_rest' => true,
+				'default'      => -1,
+			)
+		);
 	}
 
 
@@ -212,17 +245,40 @@ class  Spotlight_Loader {
 	 * @return void
 	 */
 	public function handle_form_submit() {
+
 		// Checking for correct ajax request.
-		$query = array();
+		$query              = array();
+		$enable_search_box  = 0;
+		$enable_contact_tab = 0;
+		$number_of_posts    = -1;
+
 		if ( check_ajax_referer( 'ajax_nonce', 'security' ) ) {
 			if ( isset( $_POST['spl_cpt_support'] ) ) {
 				// Sanitizing array values.
 				$query = array_map( 'sanitize_text_field', wp_unslash( $_POST['spl_cpt_support'] ) );
 			}
+
+			if ( isset( $_POST['spl_enable_search_box'] ) ) {
+
+				$enable_search_box = sanitize_text_field( wp_unslash( $_POST['spl_enable_search_box'] ) );
+			}
+
+			if ( isset( $_POST['spl_enable_contact_tab'] ) ) {
+
+				$enable_contact_tab = sanitize_text_field( wp_unslash( $_POST['spl_enable_contact_tab'] ) );
+			}
+
+			if ( isset( $_POST['spl_number_of_posts'] ) ) {
+
+				$number_of_posts = sanitize_text_field( wp_unslash( $_POST['spl_number_of_posts'] ) );
+			}
 		}
 
-		$status = update_option( 'spl_post_types', $query );
-		print_r( $status );
+		update_option( 'spl_post_types', $query );
+		update_option( 'spl_enable_search_box', $enable_search_box );
+		update_option( 'spl_enable_contact_tab', $enable_contact_tab );
+		update_option( 'spl_number_of_posts', $number_of_posts );
+		echo 'success';
 
 		wp_die();
 	}

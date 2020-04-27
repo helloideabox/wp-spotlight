@@ -7,6 +7,9 @@
 .overflow {
   overflow: hidden !important; }
 
+.height {
+  max-height: 99% !important; }
+
 .spl-button-container {
   width: 60px;
   height: 60px;
@@ -165,7 +168,6 @@
 .spl-modal-scroll-form {
   max-height: 100%; }
   .spl-modal-scroll-form .spl-main-form-container {
-    height: calc( 588px - 48px - 153px);
     padding: 10px 6px; }
 
 .spl-modal-container-background {
@@ -226,8 +228,7 @@
 
 .spl-main-container {
   background-color: white;
-  width: 100%;
-  height: calc( 588px - 48px - 71px - 59px); }
+  width: 100%; }
 
 .spl-modal-single-post-container {
   position: absolute;
@@ -930,6 +931,27 @@ small {
                 transition: fill 200ms linear 0s; }
         .spl-single-post-main-container .spl-single-post-wrapper .spl-single-post-review-conatiner .spl-single-post-review-content .spl-single-post-reaction-button:nth-child(2) {
           margin-left: 8px; }
+      .spl-single-post-main-container .spl-single-post-wrapper .spl-single-post-review-conatiner .spl-single-post-review-msg-wrap {
+        border: 1px solid;
+        border-color: #81dc9e;
+        color: #3cb170;
+        border-radius: 3px;
+        padding: 10px;
+        font-size: 13px;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%; }
+        .spl-single-post-main-container .spl-single-post-wrapper .spl-single-post-review-conatiner .spl-single-post-review-msg-wrap .spl-single-post-review-icon {
+          display: inline-block;
+          height: 24px;
+          width: 24px; }
+          .spl-single-post-main-container .spl-single-post-wrapper .spl-single-post-review-conatiner .spl-single-post-review-msg-wrap .spl-single-post-review-icon svg {
+            display: block;
+            width: 100%;
+            height: 100%;
+            fill: green; }
 
 .spl-like:hover svg .reaction-head {
   fill: #FFDA6A !important; }

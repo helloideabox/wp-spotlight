@@ -155,6 +155,33 @@
 					margin-left: 8px;
 				}
 			}
+
+			.spl-single-post-review-msg-wrap{
+				border: 1px solid;
+				border-color: rgb(129, 220, 158);
+				color: rgb(60, 177, 112);
+				border-radius: 3px;
+				padding: 10px;
+				font-size: 13px;
+				font-weight: 600;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				width: 100%;
+
+				.spl-single-post-review-icon{
+					display: inline-block;
+					height: 24px;
+					width: 24px;
+
+					svg{
+						display: block;
+						width: 100%;
+						height: 100%;
+						fill: green;
+					}
+				}
+			}
 		}
 	}
 }
