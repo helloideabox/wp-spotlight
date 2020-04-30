@@ -38,9 +38,14 @@ class Spotlight extends Component {
 			singlePostIndex: 0,
 			isSearch: false,
 			query: '',
+			isApiLoaded: false,
 			isSearchResult: false,
 			enable_search_box: true,
 			enable_contact_tab: true,
+			font_family: '',
+			post_heading_size: 13,
+			upload_image_url: '',
+			background_color: '',
 		}
 
 		this.avatar = [];
@@ -69,6 +74,20 @@ class Spotlight extends Component {
 
 				this.setState( { enable_search_box: response.spl_enable_search_box } );
 				this.setState( { enable_contact_tab: response.spl_enable_contact_tab } );
+				this.setState( { font_family: response.spl_font_family } );
+				this.setState( { post_heading_size: response.spl_post_heading_size } );
+				this.setState( { upload_image_url: response.spl_upload_image_url } );
+				this.setState( { background_color: response.spl_background_color } );
+				this.setState( { isApiLoaded: true } );
+
+				for( var i=0; i<1; i++ ) {
+					this.avatar.push(
+						<div
+							className="spl-form-heading-avatars"
+							style={{ backgroundImage: this.state.upload_image_url != ''? `url(${(this.state.upload_image_url)})` : null }}
+						></div>
+					);
+				}
 
 				let { post_types } = this.state;
 				post_types.push( ...response.spl_post_types );
@@ -101,12 +120,6 @@ class Spotlight extends Component {
 					} )
 			} );
 		} );
-
-		for( var i=0; i<2; i++ ) {
-			this.avatar.push(
-				<div className="spl-form-heading-avatars"></div>
-			);
-		}
 	}
 
 	componentDidUpdate( prevProps, prevState ) {
@@ -227,6 +240,7 @@ class Spotlight extends Component {
 	render() {
 		console.log( this.state );
 		return(
+			this.state.isApiLoaded?
 			<Fragment>
 				<CSSTransition
 					in={ this.state.isModalShow }
@@ -243,16 +257,17 @@ class Spotlight extends Component {
 					timeout={300}
 					classNames="modal"
 				>
-					<div className="spl-modal-container">
+					<div className="spl-modal-container" style={{ 'font-family': `${(this.state.font_family)}` }}>
 						<div className={ "spl-modal-scroll-container " + ( this.state.isSinglePostOpen? 'overflow' : '' ) + ( this.state.isSearch? 'spl-modal-search-container' : '' ) + ' ' + ( this.state.isAnswer? 'spl-modal-scroll-answer' : 'spl-modal-scroll-form' ) + ' ' + ( this.state.enable_search_box? '' : 'height' ) }>
 							<ModalHeader
 								onClick={ this.handleClick }
 								isAnswer={ this.state.isAnswer }
 								isSearch = { this.state.isSearch }
 								enable_contact_tab={ this.state.enable_contact_tab }
+								background_color={ this.state.background_color }
 							/>
 
-							<div className={ this.state.isAnswer? ! this.state.isSearch?"spl-heading-post-container" : 'spl-heading-search-container' : "spl-heading-form-wrap" }>
+							<div className={ ( this.state.isAnswer? ! this.state.isSearch?"spl-heading-post-container" : 'spl-heading-search-container' : "spl-heading-form-wrap" ) + ' ' + ( this.state.background_color ) }>
 								{
 									this.state.isAnswer?
 										! this.state.isSearch?
@@ -324,6 +339,7 @@ class Spotlight extends Component {
 										posts={ this.state.posts }
 										isPostFetch={ this.state.isPostFetch }
 										onClick={ this.handlePost }
+										post_heading_size={ this.state.post_heading_size }
 									/>
 									:
 									<div className="spl-posts-loading-container">
@@ -355,15 +371,18 @@ class Spotlight extends Component {
 										</div>
 									</div>
 								:
-								<ModalForm />
+								<ModalForm
+									font_family={ this.state.font_family }
+									background_color={ this.state.background_color }
+								/>
 							}
 							</main>
 
 							{
 								this.state.enable_search_box?
 									this.state.isAnswer?
-									<div className={ "spl-search-container " + ( this.state.isFocus? 'is-focussed' : 'not-focussed' ) }>
-										<input type="text" ref={ this.inputText } placeholder="What can we help you with?" className="spl-search-text" onFocus={ this.handleFocus } onBlur={ this.handleBlur } onChange={ this.searchText }/>
+									<div className={ "spl-search-container " + ( this.state.isFocus? 'is-focussed' : 'not-focussed' ) + ' ' + ( this.state.background_color == 'spl-primary'? 'spl-primary-before' : 'spl-secondary-before' ) }>
+										<input type="text" ref={ this.inputText } placeholder="What can we help you with?" className="spl-search-text" onFocus={ this.handleFocus } onBlur={ this.handleBlur } onChange={ this.searchText } style={{ 'font-family': `${(this.state.font_family)}` }}/>
 
 										<div className="spl-search-button-container">
 											<button className="spl-search-button" onClick={ this.handleSearch }>
@@ -425,7 +444,7 @@ class Spotlight extends Component {
 						timeout={130}
 						classNames="button"
 					>
-					<button className="spl-button" onClick={ this.showModal }>
+					<button className={ "spl-button " + ( this.state.background_color )} onClick={ this.showModal }>
 							<CSSTransition
 							in={ this.state.isModalShow }
 							unmountOnExit
@@ -455,6 +474,8 @@ class Spotlight extends Component {
 				</div>
 				</ReactCSSTransitionGroup>
 			</Fragment>
+			:
+			null
 		);
 	}
 }

@@ -17,6 +17,9 @@ $args = array(
 	'show_in_rest' => true,
 );
 
+// For enqueuing media library.
+wp_enqueue_media();
+
 // Gettings registered post with specified args.
 $post_type_objects = get_post_types( $args, 'object' );
 $post_types        = array();
@@ -34,6 +37,11 @@ $selected_post_types = get_option( 'spl_post_types' );
 $enable_search_box      = get_option( 'spl_enable_search_box' );
 $enable_contact_tab     = get_option( 'spl_enable_contact_tab' );
 $enable_number_of_posts = get_option( 'spl_number_of_posts' );
+$font_family            = get_option( 'spl_font_family' );
+$post_heading_size      = get_option( 'spl_post_heading_size' );
+$upload_image_url       = get_option( 'spl_upload_image_url' );
+$upload_image_name      = get_option( 'spl_upload_image_name' );
+$background_color       = get_option( 'spl_background_color' );
 
 ?>
 <div class="spl-settings-wrap">
@@ -69,14 +77,14 @@ $enable_number_of_posts = get_option( 'spl_number_of_posts' );
 							<input
 								type="checkbox"
 								name="spl_cpt_support[]"
-								value="<?php esc_attr_e( $key, 'spotlight' ); ?>"
+								value="<?php echo esc_attr( $key ); ?>"
 								<?php
 								if ( in_array( $key, $selected_post_types, true ) ) {
 									esc_attr_e( 'checked', 'spotlight' );
 								}
 								?>
 							>
-							<?php esc_attr_e( $value, 'spotlight' ); ?>
+							<?php echo esc_attr( $value ); ?>
 						</label>
 						<br>
 						<?php } ?>
@@ -128,7 +136,9 @@ $enable_number_of_posts = get_option( 'spl_number_of_posts' );
 							<input
 								type="number"
 								name="spl_number_of_posts"
-								value="<?php esc_attr_e( $enable_number_of_posts, 'spotlight' ); ?>"
+								min="-1"
+								placeholder="-1"
+								value="<?php echo esc_attr( $enable_number_of_posts ); ?>"
 								<?php checked( $enable_contact_tab ); ?>
 							>
 							<p>
@@ -141,7 +151,118 @@ $enable_number_of_posts = get_option( 'spl_number_of_posts' );
 				</tr>
 			</table>
 		</div>
-		<div id="tab-style" class="spl-settings-form-page">This is style page</div>
+
+		<div id="tab-style" class="spl-settings-form-page">
+			<table class="form-table">
+				<tr class="spl-font-family">
+					<th scope="row"><?php esc_attr_e( 'Font Family', 'spotlight' ); ?></th>
+
+					<td>
+						<label>
+							<input
+								type="text"
+								name="spl_font_family"
+								placeholder="Theme's font family"
+								value="<?php echo esc_attr( $font_family ); ?>"
+							>
+							<p>
+								<i>
+								<?php esc_attr_e( 'Sets the font family for the plugin( Note: Use suitable name for otherwise it will fallback to themes font family ).', 'spotlight' ); ?>
+								</i>
+							</p>
+						</label>
+					</td>
+				</tr>
+
+				<tr class="spl-font-family">
+					<th scope="row"><?php esc_attr_e( 'Post Heading', 'spotlight' ); ?></th>
+
+					<td>
+						<label>
+							<input
+								type="text"
+								name="spl_post_heading_size"
+								placeholder="13"
+								value="<?php echo esc_attr( $post_heading_size ); ?>"
+							><?php esc_attr_e( 'px', 'spotlight' ); ?>
+							<p>
+								<i>
+								<?php esc_attr_e( 'Sets the font size of post heading displayed in answers tab( Default: 13px ).', 'spotlight' ); ?>
+								</i>
+							</p>
+						</label>
+					</td>
+				</tr>
+
+				<tr class="spl-font-family">
+					<th scope="row"><?php esc_attr_e( 'Upload Image', 'spotlight' ); ?></th>
+
+					<td>
+						<label>
+							<button id="upload-image" class="button button-primary" type="button">
+								<?php esc_attr_e( 'Upload Image', 'spotlight' ); ?>
+							</button>
+
+							<div class="spl-upload-image-wrap">
+
+								<?php if ( '' != $upload_image_name ) { ?>
+									<span class="spl-upload-image-name"><?php echo esc_attr( $upload_image_name ); ?></span>
+								<?php } else { ?>
+									<span class="spl-upload-image-name"><?php esc_attr_e( 'No Image Selected', 'spotlight' ); ?></span>
+								<?php } ?>
+
+								<button id="spl-delete-image" class="button button-primary" type="button">Delete Image</button>
+							</div>
+
+							<input
+								class="spl_upload_image_url"
+								type="hidden"
+								name="spl_upload_image_url"
+								value="<?php echo esc_attr( $upload_image_url ); ?>"
+							>
+
+							<input
+								class="spl_upload_image_name"
+								type="hidden"
+								name="spl_upload_image_name"
+								value="<?php echo esc_attr( $upload_image_name ); ?>"
+							>
+							<p>
+								<i>
+								<?php esc_attr_e( 'Sets the image to header of the ask tab.', 'spotlight' ); ?>
+								</i>
+							</p>
+						</label>
+					</td>
+				</tr>
+
+				<tr class="spl-background-color">
+					<th scope="row"><?php esc_attr_e( 'Background Color', 'spotlight' ); ?></th>
+
+					<td>
+						<label>
+							<input
+								type="radio"
+								name="spl_background_color"
+								value="<?php esc_attr_e( 'spl-primary', 'spotlight' ); ?>"
+								<?php checked( $background_color, 'spl-primary' ); ?>
+							><?php esc_attr_e( 'primary', 'spotlight' ); ?>
+							<input
+								type="radio"
+								name="spl_background_color"
+								value="<?php esc_attr_e( 'spl-secondary', 'spotlight' ); ?>"
+								<?php checked( $background_color, 'spl-secondary' ); ?>
+							><?php esc_attr_e( 'secondary', 'spotlight' ); ?>
+							<p>
+								<i>
+								<?php esc_attr_e( 'Sets the background color/overall color of the plugin( Default: primary ).', 'spotlight' ); ?>
+								</i>
+							</p>
+						</label>
+					</td>
+				</tr>
+			</table>
+		</div>
 
 		<?php submit_button(); ?>
 	</form>

@@ -1,4 +1,6 @@
 $height: 588px;
+$primary: rgb(252, 93, 125);
+$secodary: rgb(88, 196, 168);
 
 #spl-root{
 	position: fixed;
@@ -30,6 +32,14 @@ $height: 588px;
 	transition: transform 150ms ease-in-out 0s;
 }
 
+.spl-primary{
+	background-color: $primary !important;
+}
+
+.spl-secondary{
+	background-color: $secodary !important;
+}
+
 .spl-button{
 	width: 100%;
 	height: 100%;
@@ -39,7 +49,6 @@ $height: 588px;
 	user-select: none;
 	outline: none;
 	padding: 0;
-	background-color: rgb(252, 93, 125) !important;
 	position: relative;
 	transition: background-color 200ms linear 0s, transform 200ms linear 0s;
 
@@ -78,8 +87,13 @@ $height: 588px;
 	}
 }
 
-.spl-button:hover{
+.spl-primary:hover{
 	background-color: rgb(244, 85, 117) !important;
+	box-shadow: rgba(0, 0, 0, 0.06) 0px 0px 0px 30px inset;
+}
+
+.spl-secondary:hover{
+	background-color: rgb(80, 188, 160) !important;
 	box-shadow: rgba(0, 0, 0, 0.06) 0px 0px 0px 30px inset;
 }
 
@@ -104,7 +118,6 @@ $height: 588px;
 }
 
 .spl-modal-container{
-	font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif;
 	position: fixed;
 	bottom: 85px;
 	right: 20px;
@@ -131,7 +144,6 @@ $height: 588px;
 			border: none;
 			border-radius: 4px;
 			font-size: 13px;
-			font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
 			background-color: transparent;
 			padding: 1.5rem 1.8rem;
 			position: relative;
@@ -159,9 +171,17 @@ $height: 588px;
 		position: absolute;
 		width: 0%;
 		height: 2px;
-		background-color: rgb(252, 93, 125);
+		//background-color: rgb(252, 93, 125);
 		top: -2px;
 		transition: all 300ms linear 0ms;
+	}
+
+	.spl-primary-before::before{
+		background-color: $primary;
+	}
+
+	.spl-secondary-before::before{
+		background-color: $secodary;
 	}
 
 	.is-focussed::before{
@@ -221,7 +241,7 @@ $height: 588px;
 .spl-heading-post-container{
 	transition: all 250ms ease 0s;
 	min-height: 71px;
-	background-color: rgb(252, 93, 125);
+	pointer-events: none;
 	height: 71px;
 	padding: 0px 20px 31px;
 
@@ -258,6 +278,7 @@ $height: 588px;
 	background-color: rgb(252, 93, 125);
 	min-height: 153px;
 	height: 153px;
+	pointer-events: none;
 }
 
 .spl-heading-search-container{
@@ -289,7 +310,6 @@ $height: 588px;
 	left: 0;
 	margin: auto;
 	flex-direction: column;
-	font-family: "Aktiv Grotesk", sans-serif !important;
 }
 
 .single-post-enter {
@@ -330,10 +350,10 @@ $height: 588px;
 
 		.spl-form-heading-avatars{
 			background-size: cover;
-			background-image: url(https://d33v4339jhl8k0.cloudfront.net/users/93972.49669.jpg);
+			background-image: url( './images/image1.jpg' );
 			display: block;
-			height: 44px;
-			width: 44px;
+			height: 60px;
+			width: 60px;
 			background-position: center center;
 			border-radius: 50%;
 			border: 2px solid white;

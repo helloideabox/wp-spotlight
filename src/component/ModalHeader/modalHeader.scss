@@ -2,7 +2,6 @@
 	min-height: 48px;
 	height: 48px;
 	width: 100%;
-	background-color: rgb(252, 93, 125);
 	color: white;
 	position: sticky;
 	top: 0;
@@ -31,9 +30,22 @@
 	}
 }
 
-.spl-active{
+.spl-primary-navigation{
+	background-color: rgb(252, 93, 125);
+}
+
+.spl-secondary-navigation{
+	background-color: rgb(88, 196, 168);
+}
+
+.spl-primary-active{
 	font-weight: bold;
 	background-color: #e74868;
+}
+
+.spl-secondary-active{
+	font-weight: bold;
+	background-color: #43af93;
 }
 
 .spl-navigation-back{

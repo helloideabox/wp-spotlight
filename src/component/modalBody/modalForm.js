@@ -198,7 +198,7 @@ class ModalPost extends Component{
 					<div className="spl-modal-form-wrap">
 						<form className="spl-modal-form-container" action="post">
 							<div className={ "spl-modal-form-ask-name " + ( this.state.formErr.nameErr? 'form-err' : '' ) }>
-								<input type="text" className="spl-modal-input-name" name="name" placeholder={ __( "Name" ) } value={ this.state.name } onChange={ this.handleChange } required />
+								<input type="text" className="spl-modal-input-name" name="name" placeholder={ __( "Name" ) } value={ this.state.name } onChange={ this.handleChange } required style={{ 'font-family': `${(this.props.font_family)}` }}/>
 							</div>
 							{
 								this.state.formErr.nameErr?
@@ -214,7 +214,7 @@ class ModalPost extends Component{
 							}
 
 							<div className={ "spl-modal-form-ask-email " + ( this.state.formErr.emailErr? 'form-err' : '' ) }>
-								<input type="email" className="spl-modal-input-email" name="email" placeholder={ __( "Eamil address" ) } value={ this.state.email } onChange={ this.handleChange } required />
+								<input type="email" className="spl-modal-input-email" name="email" placeholder={ __( "Eamil address" ) } value={ this.state.email } onChange={ this.handleChange } required style={{ 'font-family': `${(this.props.font_family)}` }}/>
 							</div>
 							{
 								this.state.formErr.emailErr?
@@ -230,7 +230,7 @@ class ModalPost extends Component{
 							}
 
 							<div className={ "spl-modal-form-ask-help " + ( this.state.formErr.queryErr? 'form-err' : '' ) }>
-								<textarea className="spl-modal-input-help" name="query" placeholder={ __( "How can we help?" ) } value={ this.state.query } onChange={ this.handleChange } ></textarea>
+								<textarea className="spl-modal-input-help" name="query" placeholder={ __( "How can we help?" ) } value={ this.state.query } onChange={ this.handleChange } style={{ 'font-family': `${(this.props.font_family)}` }}></textarea>
 								
 								<div className="spl-modal-form-fileUpload">
 									<input type="file" hidden name="file" onChange={ this.handleClick } ref={ this.fileUpload } />
@@ -279,7 +279,10 @@ class ModalPost extends Component{
 							}
 
 							<div className="spl-modal-form-submit-wrap">
-								<input className={ "spl-modal-form-submit " + ( this.state.isSuccessMsg? 'not-allowed' : '' ) } disabled={ this.state.isSuccessMsg } type="submit" value={ __( 'Send a message' ) } onClick={ this.handleSubmit } />
+								<button className={ "spl-modal-form-submit " + ( this.state.isSuccessMsg? 'not-allowed' : '' ) + ' ' + ( this.props.background_color ) } disabled={ this.state.isSuccessMsg } type="submit" onClick={ this.handleSubmit } style={{ 'font-family': `${(this.props.font_family)}` }}>
+									{ __( 'Send a message' ) }
+								</button>
+								
 
 								{
 									this.state.isFormSubmitLoader?

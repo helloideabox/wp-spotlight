@@ -23,17 +23,53 @@ class ModalSinglePost extends Component{
 
 		this.state = {
 			isRated: false,
+			isfeedBack: true,
 		}
+
+		this.post_id = React.createRef();
 
 		this.handleRate = this.handleRate.bind( this );
 	}
 
-	async componentDidMount() {
+	componentDidMount() {
 		// window.addEventListener( 'scroll', this.handleScroll , true );
+		let like = [], dislike = [];
+
+		if( localStorage.getItem( 'liked_post' ) ) {
+			like = JSON.parse( localStorage.getItem( 'liked_post' ) );
+		}
+
+		if( localStorage.getItem( 'disliked_post' ) ) {
+			dislike = JSON.parse( localStorage.getItem( 'disliked_post' ) );
+		}
+		if( like.includes( this.post_id.current.id ) || dislike.includes( this.post_id.current.id ) ) {
+			this.setState( { isRated: false } );
+			this.setState( { isfeedBack: false } );
+		}
 	}
 
-	handleRate() {
+	handleRate( rate ) {
+
+		let like = [], dislike = [];
+
+		if( rate === 'like' ){
+
+			if( localStorage.getItem( 'liked_post' ) ) {
+				like = JSON.parse( localStorage.getItem( 'liked_post' ) );
+				console.log( like );
+			}
+			like.push( this.post_id.current.id );
+			localStorage.setItem( 'liked_post', JSON.stringify( like ) );
+		} else {
+
+			if( localStorage.getItem( 'disliked_post' ) ) {
+				dislike = JSON.parse( localStorage.getItem( 'disliked_post' ) );
+			}
+			dislike.push( this.post_id.current.id );
+			localStorage.setItem( 'disliked_post', JSON.stringify( dislike ) );
+		}
 		this.setState( { isRated: true } );
+		this.setState( { isfeedBack: false } );
 	}
 
 	handleClose( bool ) {
@@ -43,7 +79,7 @@ class ModalSinglePost extends Component{
 	render() {
 		return(
 			<Fragment>
-				<div id={ this.props.post_id } className="spl-single-post-main-container">
+				<div id={ this.props.post_id } className="spl-single-post-main-container" ref={ this.post_id }>
 					<div className="spl-single-post-close">
 						<button className="spl-single-post-close-button" onClick={ () => this.handleClose( false ) }>
 							<span class="spl-icon-close">
@@ -66,47 +102,59 @@ class ModalSinglePost extends Component{
 							</div>
 						</div>
 
-						<div className="spl-single-post-review-conatiner">
-							{
-								this.state.isRated?
-								<div className="spl-single-post-review-msg-wrap">
-										<span className="spl-single-post-review-icon">
-											<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-													<path d="M9.8 15.2l-2-2c-.4-.4-.4-1 0-1.4s1-.4 1.4 0l1.3 1.3 4.3-4.3c.4-.4 1-.4 1.4 0s.4 1 0 1.4l-5 5c-.2.2-.5.3-.7.3-.3 0-.5-.1-.7-.3z"></path>
-											</svg>
-										</span>
-
-										<span className="spl-single-post-review-text">
-											{ __( 'Thank you for your response.' ) }
-										</span>
-								</div>
-								:
-								<div className="spl-single-post-review-content">
-									<p className="spl-single-post-review-text">
-										{ __( 'Did this answer to your question?' ) }
-									</p>
-
-									<div className="spl-single-post-review-reaction">
-										<button className="spl-single-post-reaction-button spl-like" onClick={ this.handleRate }>
-											<span>
-												<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-													<path class="reaction-head" fill-rule="evenodd" clip-rule="evenodd" d="M12 24c6.627 0 12-5.373 12-12S18.627 0 12 0 0 5.373 0 12s5.373 12 12 12z" fill="#FFDA6A"></path>
-													<path class="reaction-face" fill-rule="evenodd" clip-rule="evenodd" d="M7.385 10.84a1.846 1.846 0 100-3.692 1.846 1.846 0 000 3.693zm10.07 3.939c.552.161.826.774.533 1.268-1.243 2.096-3.46 3.491-5.988 3.491-2.528 0-4.745-1.395-5.988-3.49-.293-.495-.019-1.108.532-1.27A19.403 19.403 0 0112 14c1.89 0 3.72.271 5.456.779zM18.463 9a1.846 1.846 0 11-3.693 0 1.846 1.846 0 013.693 0z" fill="#2E2D2E"></path>
+						{
+							this.state.isRated || this.state.isfeedBack?
+							<div className="spl-single-post-review-conatiner">
+								{
+									this.state.isRated?
+									<div className="spl-single-post-review-msg-wrap">
+											<span className="spl-single-post-review-icon">
+												<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+														<path d="M9.8 15.2l-2-2c-.4-.4-.4-1 0-1.4s1-.4 1.4 0l1.3 1.3 4.3-4.3c.4-.4 1-.4 1.4 0s.4 1 0 1.4l-5 5c-.2.2-.5.3-.7.3-.3 0-.5-.1-.7-.3z"></path>
 												</svg>
 											</span>
-										</button>
-										<button className="spl-single-post-reaction-button spl-dislike" onClick={ this.handleRate }>
-											<span>
-												<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-													<path class="reaction-head" fill-rule="evenodd" clip-rule="evenodd" d="M12 24c6.627 0 12-5.373 12-12S18.627 0 12 0 0 5.373 0 12s5.373 12 12 12z" fill="#BDD6FF"></path>
-													<path class="reaction-face" fill-rule="evenodd" clip-rule="evenodd" d="M7.383 12.092a1.846 1.846 0 100-3.69 1.846 1.846 0 000 3.69zm9.231 0a1.846 1.846 0 100-3.69 1.846 1.846 0 000 3.69zm-7.507 5.415c.334-.334 1.177-.843 2.276-.99 1.055-.143 2.325.05 3.592 1.064a1 1 0 001.25-1.562c-1.733-1.386-3.563-1.693-5.108-1.485-1.501.202-2.758.893-3.424 1.559a1 1 0 001.414 1.414z" fill="#2E2D2E"></path>
-												</svg>
+
+											<span className="spl-single-post-review-text">
+												{ __( 'Thank you for your response.' ) }
 											</span>
-										</button>
 									</div>
-								</div>
-							}
-						</div>
+									:
+									null
+								}
+
+								{
+									this.state.isfeedBack?
+									<div className="spl-single-post-review-content">
+										<p className="spl-single-post-review-text">
+											{ __( 'Did this answer to your question?' ) }
+										</p>
+
+										<div className="spl-single-post-review-reaction">
+											<button className="spl-single-post-reaction-button spl-like" onClick={ () => this.handleRate( 'like' ) }>
+												<span>
+													<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+														<path class="reaction-head" fill-rule="evenodd" clip-rule="evenodd" d="M12 24c6.627 0 12-5.373 12-12S18.627 0 12 0 0 5.373 0 12s5.373 12 12 12z" fill="#FFDA6A"></path>
+														<path class="reaction-face" fill-rule="evenodd" clip-rule="evenodd" d="M7.385 10.84a1.846 1.846 0 100-3.692 1.846 1.846 0 000 3.693zm10.07 3.939c.552.161.826.774.533 1.268-1.243 2.096-3.46 3.491-5.988 3.491-2.528 0-4.745-1.395-5.988-3.49-.293-.495-.019-1.108.532-1.27A19.403 19.403 0 0112 14c1.89 0 3.72.271 5.456.779zM18.463 9a1.846 1.846 0 11-3.693 0 1.846 1.846 0 013.693 0z" fill="#2E2D2E"></path>
+													</svg>
+												</span>
+											</button>
+											<button className="spl-single-post-reaction-button spl-dislike" onClick={ () => this.handleRate( 'dislike' ) }>
+												<span>
+													<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+														<path class="reaction-head" fill-rule="evenodd" clip-rule="evenodd" d="M12 24c6.627 0 12-5.373 12-12S18.627 0 12 0 0 5.373 0 12s5.373 12 12 12z" fill="#BDD6FF"></path>
+														<path class="reaction-face" fill-rule="evenodd" clip-rule="evenodd" d="M7.383 12.092a1.846 1.846 0 100-3.69 1.846 1.846 0 000 3.69zm9.231 0a1.846 1.846 0 100-3.69 1.846 1.846 0 000 3.69zm-7.507 5.415c.334-.334 1.177-.843 2.276-.99 1.055-.143 2.325.05 3.592 1.064a1 1 0 001.25-1.562c-1.733-1.386-3.563-1.693-5.108-1.485-1.501.202-2.758.893-3.424 1.559a1 1 0 001.414 1.414z" fill="#2E2D2E"></path>
+													</svg>
+												</span>
+											</button>
+										</div>
+									</div>
+									:
+									null
+								}
+							</div>
+							:
+							null
+						}
 					</div>
 				</div>
 			</Fragment>

@@ -235,6 +235,46 @@ class  Spotlight_Loader {
 				'default'      => -1,
 			)
 		);
+
+		register_setting(
+			'spl-settings-group',
+			'spl_font_family',
+			array(
+				'type'         => 'string',
+				'show_in_rest' => true,
+				'default'      => '',
+			)
+		);
+
+		register_setting(
+			'spl-settings-group',
+			'spl_post_heading_size',
+			array(
+				'type'         => 'integer',
+				'show_in_rest' => true,
+				'default'      => 13,
+			)
+		);
+
+		register_setting(
+			'spl-settings-group',
+			'spl_upload_image_url',
+			array(
+				'type'         => 'string',
+				'show_in_rest' => true,
+				'default'      => '',
+			)
+		);
+
+		register_setting(
+			'spl-settings-group',
+			'spl_background_color',
+			array(
+				'type'         => 'string',
+				'show_in_rest' => true,
+				'default'      => 'spl-primary',
+			)
+		);
 	}
 
 
@@ -251,6 +291,11 @@ class  Spotlight_Loader {
 		$enable_search_box  = 0;
 		$enable_contact_tab = 0;
 		$number_of_posts    = -1;
+		$font_family        = '';
+		$post_heading_size  = 13;
+		$upload_image_url   = '';
+		$upload_image_name  = '';
+		$background_color   = 'primary';
 
 		if ( check_ajax_referer( 'ajax_nonce', 'security' ) ) {
 			if ( isset( $_POST['spl_cpt_support'] ) ) {
@@ -272,12 +317,42 @@ class  Spotlight_Loader {
 
 				$number_of_posts = sanitize_text_field( wp_unslash( $_POST['spl_number_of_posts'] ) );
 			}
+
+			if ( isset( $_POST['spl_font_family'] ) ) {
+
+				$font_family = sanitize_text_field( wp_unslash( $_POST['spl_font_family'] ) );
+			}
+
+			if ( isset( $_POST['spl_post_heading_size'] ) ) {
+
+				$post_heading_size = sanitize_text_field( wp_unslash( $_POST['spl_post_heading_size'] ) );
+			}
+
+			if ( isset( $_POST['spl_upload_image_url'] ) ) {
+
+				$upload_image_url = sanitize_text_field( wp_unslash( $_POST['spl_upload_image_url'] ) );
+			}
+
+			if ( isset( $_POST['spl_upload_image_name'] ) ) {
+
+				$upload_image_name = sanitize_text_field( wp_unslash( $_POST['spl_upload_image_name'] ) );
+			}
+
+			if ( isset( $_POST['spl_background_color'] ) ) {
+
+				$background_color = sanitize_text_field( wp_unslash( $_POST['spl_background_color'] ) );
+			}
 		}
 
 		update_option( 'spl_post_types', $query );
 		update_option( 'spl_enable_search_box', $enable_search_box );
 		update_option( 'spl_enable_contact_tab', $enable_contact_tab );
 		update_option( 'spl_number_of_posts', $number_of_posts );
+		update_option( 'spl_font_family', $font_family );
+		update_option( 'spl_post_heading_size', $post_heading_size );
+		update_option( 'spl_upload_image_url', $upload_image_url );
+		update_option( 'spl_upload_image_name', $upload_image_name );
+		update_option( 'spl_background_color', $background_color );
 		echo 'success';
 
 		wp_die();
