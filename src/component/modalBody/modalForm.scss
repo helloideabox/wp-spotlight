@@ -52,7 +52,8 @@ $height: 588px;
 				background-color: #fff;
 				padding: 0px 5px;
 				color: #c1cbd4;
-				outline: none;
+				outline: none !important;
+				border: none;
 
 				.spl-modal-form-fileUpload-icon{
 					display: block;
@@ -75,7 +76,8 @@ $height: 588px;
 			bottom: 5px;
 
 			.spl-modal-form-fileUploaded-button{
-				outline: none;
+				outline: none !important;
+				border: none;
 				min-width: 18px;
 				font-size: 13px;
 				font-weight: 500;
@@ -106,7 +108,8 @@ $height: 588px;
 			text-transform: inherit;
 			font-size: 14px;
 			//background-color: #fc5d7d;
-			outline: none;
+			outline: none !important;
+			border: none;
 			width: 100%;
 			color: white;
 			height: 48px;

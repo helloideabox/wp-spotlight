@@ -136,7 +136,7 @@ class  Spotlight_Loader {
 					$post_type_data[] = array(
 						'id'        => get_the_ID(),
 						'title'     => get_the_title(),
-						'excerpt'   => substr( get_the_excerpt(), 0, 300 ),  // custom excerpt length.
+						'excerpt'   => substr( get_the_excerpt(), 0, 250 ),  // custom excerpt length.
 						'content'   => get_the_content(),
 						'permalink' => get_permalink(),
 					);
@@ -295,7 +295,7 @@ class  Spotlight_Loader {
 		$post_heading_size  = 13;
 		$upload_image_url   = '';
 		$upload_image_name  = '';
-		$background_color   = 'primary';
+		$background_color   = 'spl-primary';
 
 		if ( check_ajax_referer( 'ajax_nonce', 'security' ) ) {
 			if ( isset( $_POST['spl_cpt_support'] ) ) {

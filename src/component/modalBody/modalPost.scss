@@ -61,6 +61,10 @@
 		}
 	}
 
+	.spl-single-post p{
+		text-align: justify;
+	}
+
 	.spl-single-post::after{
 		box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 40px 0px;
 		content: "";

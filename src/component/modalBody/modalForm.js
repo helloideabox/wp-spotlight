@@ -186,7 +186,6 @@ class ModalPost extends Component{
 	}
 
 	render() {
-		console.log( this.state );
 		return(
 			<Fragment>
 				<CSSTransition

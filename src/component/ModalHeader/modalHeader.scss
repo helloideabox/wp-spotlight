@@ -24,6 +24,10 @@
 	text-transform: capitalize;
 	text-decoration: none;
 
+	&:hover{
+		color: white;
+	}
+
 	.spl-navigation-icon{
 		margin-right: 1px;
 		fill: white;

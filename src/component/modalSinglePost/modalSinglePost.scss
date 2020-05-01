@@ -46,6 +46,7 @@
 		display: flex;
 		flex-direction: column;
 		flex: 1;
+		width: 100%;
 
 		.spl-single-post-content{
 			flex: 1;
@@ -75,6 +76,10 @@
 
 				article{
 					padding: 20px 10px 20px;
+				}
+
+				article p{
+					text-align: justify;
 				}
 			}
 		}

@@ -1,6 +1,4 @@
 import './modalSinglePost.scss';
-import { CSSTransition, TransitionGroup } from 'react-transition-group';
-import parse from 'html-react-parser';
 
 /**
  * WordPress dependencies

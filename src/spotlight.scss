@@ -2,11 +2,20 @@ $height: 588px;
 $primary: rgb(252, 93, 125);
 $secodary: rgb(88, 196, 168);
 
+button{
+	border: none !important;
+	outline: none !important;
+}
+
 #spl-root{
 	position: fixed;
 	bottom: 10px;
 	right: 20px;
 	z-index: 999;
+}
+
+#spl-root *{
+	line-height: initial;
 }
 
 .overflow{
@@ -47,7 +56,7 @@ $secodary: rgb(88, 196, 168);
 	border-radius: 50%;
 	margin: 0;
 	user-select: none;
-	outline: none;
+	outline: none !important;
 	padding: 0;
 	position: relative;
 	transition: background-color 200ms linear 0s, transform 200ms linear 0s;
@@ -152,6 +161,7 @@ $secodary: rgb(88, 196, 168);
 		.spl-search-button-container{
 			width: 17%;
 			padding: 3px 4px;
+
 			.spl-search-button{
 				fill: #c1cbd4;
 				width: 100%;
@@ -159,7 +169,8 @@ $secodary: rgb(88, 196, 168);
 				padding: 0;
 				display: flex;
 				background: none;
-				outline: none;
+				outline: none !important;
+				border: none;
 				justify-content: center;
 				align-items: center;
 			}
@@ -249,7 +260,7 @@ $secodary: rgb(88, 196, 168);
 		margin: 0;
 		margin-bottom: 8px;
 		padding-top: 7px;
-		font-size: 1.5rem;
+		font-size: 15px;
 		font-weight: 500;
 		text-align: center;
 		color: white;
