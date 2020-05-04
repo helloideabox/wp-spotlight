@@ -232,7 +232,7 @@ class  Spotlight_Loader {
 			array(
 				'type'         => 'integer',
 				'show_in_rest' => true,
-				'default'      => -1,
+				'default'      => 10,
 			)
 		);
 
@@ -290,7 +290,7 @@ class  Spotlight_Loader {
 		$query              = array();
 		$enable_search_box  = 0;
 		$enable_contact_tab = 0;
-		$number_of_posts    = -1;
+		$number_of_posts    = 10;
 		$font_family        = '';
 		$post_heading_size  = 13;
 		$upload_image_url   = '';
@@ -399,7 +399,7 @@ class  Spotlight_Loader {
 							mkdir( $upload_dir['basedir'] . '/spotlight' );
 						}
 
-						// Moving uploaded file from tmp to destination folder. 
+						// Moving uploaded file from tmp to destination folder.
 						$destination_file = $upload_dir['basedir'] . '/spotlight/' . $file_names[ $index ];
 						move_uploaded_file( $file_tmps[ $index ], $destination_file );
 					}

@@ -137,7 +137,7 @@ $background_color       = get_option( 'spl_background_color' );
 								type="number"
 								name="spl_number_of_posts"
 								min="-1"
-								placeholder="-1"
+								placeholder="10"
 								value="<?php echo esc_attr( $enable_number_of_posts ); ?>"
 								<?php checked( $enable_contact_tab ); ?>
 							>

@@ -255,7 +255,7 @@ class ModalPost extends Component{
 									classNames="file-uploaded"
 								>
 									<div className="spl-modal-form-fileUploaded-number">
-										<button className="spl-modal-form-fileUploaded-button" type="button" onClick={ this.openUploadList }>
+										<button className="spl-modal-form-fileUploaded-button" type="button" onClick={ this.openUploadList } style={{ 'font-family': `${(this.props.font_family)}` }}>
 											<span>
 												{ this.state.files.length > 0? this.state.files.length : '' }
 											</span>
