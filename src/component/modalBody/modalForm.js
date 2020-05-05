@@ -145,7 +145,7 @@ class ModalPost extends Component{
 				// Clearing the form after the response.
 				setTimeout( () => {
 					this.setState( { isSuccessMsg:false } );
-				}, 3000 );
+				}, 4000 );
 
 				// Fading the success response.
 				setTimeout( () => {

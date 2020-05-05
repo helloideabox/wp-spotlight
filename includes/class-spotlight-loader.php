@@ -455,9 +455,9 @@ class  Spotlight_Loader {
 			);
 
 			if ( wp_mail( $to, $subject, $query, $headers ) ) {
-				echo 'success';
+				return 'success';
 			} else {
-				echo 'failed';
+				return 'failed';
 			}
 		}
 
