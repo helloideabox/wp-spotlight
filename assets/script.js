@@ -25,7 +25,7 @@ jQuery( document ).ready( function() {
 
 		// Send data to server. 
 		data = 'action=handle_submit&' + form.serialize() + '&security=' + settings.nonce;
-		console.log( data );
+		//console.log( data );
 		
 		// Ajax request.
 		jQuery.post( settings.ajax_url, data, function( response ) {
@@ -55,13 +55,12 @@ jQuery( document ).ready( function() {
 			jQuery( '.spl-upload-image-name' ).html( uploaded_image.title );
 			jQuery( '.spl_upload_image_url' ).val( uploaded_image.url );
 			jQuery( '.spl_upload_image_name' ).val( uploaded_image.title );
-			console.log( uploaded_image );
+			//console.log( uploaded_image );
 		} );
 	} );
 
 	jQuery( '#spl-delete-image' ).on( 'click', function() {
 
-		console.log( 'sdas' );
 		jQuery( '.spl-upload-image-name' ).html( 'No Image Selected' );
 		jQuery( '.spl_upload_image_name' ).val( ' ' );
 		jQuery( '.spl_upload_image_url' ).val( ' ' );
