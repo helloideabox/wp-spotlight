@@ -201,6 +201,7 @@ $send_email             = get_option( 'spl_send_email' );
 							<input
 								type="email"
 								name="spl_send_email"
+								placeholder="abc@gmail.com"
 								value="<?php echo esc_attr( $send_email ); ?>"
 							>
 							<p>

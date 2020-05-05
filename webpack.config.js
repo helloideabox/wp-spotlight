@@ -5,7 +5,7 @@ const webpack = require( 'webpack' );
 const config = {
 	// Entry point.
 	entry: {
-		admin: ['./src/index.js'],
+		frontend: ['./src/index.js'],
 	},
 
 	// Output single file.
@@ -52,7 +52,7 @@ const config = {
 	},
 	plugins: [
 		new MiniCssExtractPlugin( {
-			filename: 'admin.css'
+			filename: 'frontend.css'
 		} )
 	]
 
