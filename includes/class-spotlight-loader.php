@@ -73,8 +73,11 @@ class  Spotlight_Loader {
 	public function register_admin_script( $hook ) {
 
 		if ( 'toplevel_page_spotlight' === $hook ) {
+
+			// For wp color picker.
+			wp_enqueue_style( 'wp-color-picker' );
 			wp_enqueue_style( 'spl-style', SPOTLIGHT_URL . 'assets/style.css', array(), SPOTLIGHT_VERSION, false );
-			wp_enqueue_script( 'spl-script', SPOTLIGHT_URL . 'assets/script.js', array(), SPOTLIGHT_VERSION, true );
+			wp_enqueue_script( 'spl-script', SPOTLIGHT_URL . 'assets/script.js', array( 'wp-color-picker' ), SPOTLIGHT_VERSION, true );
 			wp_localize_script(
 				'spl-script',
 				'settings',
@@ -268,11 +271,11 @@ class  Spotlight_Loader {
 
 		register_setting(
 			'spl-settings-group',
-			'spl_background_color',
+			'spl_primary_color',
 			array(
 				'type'         => 'string',
 				'show_in_rest' => true,
-				'default'      => 'spl-primary',
+				'default'      => '#fc5d7d',
 			)
 		);
 	}
@@ -295,7 +298,7 @@ class  Spotlight_Loader {
 		$post_heading_size  = 13;
 		$upload_image_url   = '';
 		$upload_image_name  = '';
-		$background_color   = 'spl-primary';
+		$primary_color      = '#fc5d7d';
 
 		if ( check_ajax_referer( 'ajax_nonce', 'security' ) ) {
 			if ( isset( $_POST['spl_cpt_support'] ) ) {
@@ -338,9 +341,9 @@ class  Spotlight_Loader {
 				$upload_image_name = sanitize_text_field( wp_unslash( $_POST['spl_upload_image_name'] ) );
 			}
 
-			if ( isset( $_POST['spl_background_color'] ) ) {
+			if ( isset( $_POST['spl_primary_color'] ) ) {
 
-				$background_color = sanitize_text_field( wp_unslash( $_POST['spl_background_color'] ) );
+				$primary_color = sanitize_text_field( wp_unslash( $_POST['spl_primary_color'] ) );
 			}
 		}
 
@@ -352,7 +355,7 @@ class  Spotlight_Loader {
 		update_option( 'spl_post_heading_size', $post_heading_size );
 		update_option( 'spl_upload_image_url', $upload_image_url );
 		update_option( 'spl_upload_image_name', $upload_image_name );
-		update_option( 'spl_background_color', $background_color );
+		update_option( 'spl_primary_color', $primary_color );
 		echo 'success';
 
 		wp_die();

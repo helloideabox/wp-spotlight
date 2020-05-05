@@ -29,28 +29,33 @@
 	}
 
 	.spl-navigation-icon{
+		display: flex;
 		margin-right: 1px;
 		fill: white;
 	}
 }
 
-.spl-primary-navigation{
-	background-color: rgb(252, 93, 125);
+.spl-active{
+	background-color: white;
 }
 
-.spl-secondary-navigation{
-	background-color: rgb(88, 196, 168);
-}
+// .spl-primary-navigation{
+// 	background-color: rgb(252, 93, 125);
+// }
 
-.spl-primary-active{
-	font-weight: bold;
-	background-color: #e74868;
-}
+// .spl-secondary-navigation{
+// 	background-color: rgb(88, 196, 168);
+// }
 
-.spl-secondary-active{
-	font-weight: bold;
-	background-color: #43af93;
-}
+// .spl-primary-active{
+// 	font-weight: bold;
+// 	background-color: #e74868;
+// }
+
+// .spl-secondary-active{
+// 	font-weight: bold;
+// 	background-color: #43af93;
+// }
 
 .spl-navigation-back{
 	position: absolute;

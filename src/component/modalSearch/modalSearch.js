@@ -86,7 +86,7 @@ class ModalSearch extends Component{
 									>
 									<li className="spl-single-post-container" key={ index } style={{ 'transition-delay': `${(parseInt(index)+1) * 150}ms` }}>
 										<a className="spl-single-post" onClick={ () => this.handleSinglePost( index, true ) }>
-											<h2 className="spl-single-post-heading">
+											<h2 className="spl-single-post-heading" style={{ 'font-size': `${(this.props.post_heading_size)}px` }}>
 												{ __( this.state.posts[index].title ) }
 											</h2>
 											<p className="spl-single-post-content">

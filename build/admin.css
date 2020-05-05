@@ -29,12 +29,6 @@ button {
   transform: scale(1);
   transition: transform 150ms ease-in-out 0s; }
 
-.spl-primary {
-  background-color: #fc5d7d !important; }
-
-.spl-secondary {
-  background-color: #58c4a8 !important; }
-
 .spl-button {
   width: 100%;
   height: 100%;
@@ -48,7 +42,9 @@ button {
   outline: none !important;
   padding: 0;
   position: relative;
-  transition: background-color 200ms linear 0s, transform 200ms linear 0s; }
+  transition: all 200ms linear 0s, transform 200ms linear 0s; }
+  .spl-button:hover {
+    box-shadow: rgba(0, 0, 0, 0.06) 0px 0px 0px 30px inset; }
   .spl-button span {
     width: 60px;
     display: flex;
@@ -75,14 +71,6 @@ button {
 
 .spl-icon-open svg {
   height: 22px; }
-
-.spl-primary:hover {
-  background-color: #f45575 !important;
-  box-shadow: rgba(0, 0, 0, 0.06) 0px 0px 0px 30px inset; }
-
-.spl-secondary:hover {
-  background-color: #50bca0 !important;
-  box-shadow: rgba(0, 0, 0, 0.06) 0px 0px 0px 30px inset; }
 
 .icon-enter {
   transform: rotate(45deg) scale(0); }
@@ -147,12 +135,9 @@ button {
     position: absolute;
     width: 0%;
     height: 2px;
+    background-color: var(--before-background-color);
     top: -2px;
     transition: all 300ms linear 0ms; }
-  .spl-modal-container .spl-primary-before::before {
-    background-color: #fc5d7d; }
-  .spl-modal-container .spl-secondary-before::before {
-    background-color: #58c4a8; }
   .spl-modal-container .is-focussed::before {
     width: 100%;
     transition: all 300ms linear 0ms; }
@@ -235,7 +220,6 @@ button {
 
 .spl-heading-form-wrap {
   transition: all 250ms ease 0s;
-  background-color: #fc5d7d;
   min-height: 153px;
   height: 153px;
   pointer-events: none; }
@@ -387,22 +371,12 @@ button {
   .spl-navigation:hover {
     color: white; }
   .spl-navigation .spl-navigation-icon {
+    display: flex;
     margin-right: 1px;
     fill: white; }
 
-.spl-primary-navigation {
-  background-color: #fc5d7d; }
-
-.spl-secondary-navigation {
-  background-color: #58c4a8; }
-
-.spl-primary-active {
-  font-weight: bold;
-  background-color: #e74868; }
-
-.spl-secondary-active {
-  font-weight: bold;
-  background-color: #43af93; }
+.spl-active {
+  background-color: white; }
 
 .spl-navigation-back {
   position: absolute;

@@ -66,4 +66,8 @@ jQuery( document ).ready( function() {
 		jQuery( '.spl_upload_image_name' ).val( ' ' );
 		jQuery( '.spl_upload_image_url' ).val( ' ' );
 	} );
+
+
+	// Help to initiate wp color picker with associated class.
+	jQuery('.spl-primary-color-field').wpColorPicker();
 } );

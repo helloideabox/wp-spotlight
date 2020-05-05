@@ -45,7 +45,7 @@ class Spotlight extends Component {
 			font_family: '',
 			post_heading_size: 13,
 			upload_image_url: '',
-			background_color: '',
+			primary_color: '',
 		}
 
 		this.avatar = [];
@@ -77,7 +77,7 @@ class Spotlight extends Component {
 				this.setState( { font_family: response.spl_font_family } );
 				this.setState( { post_heading_size: response.spl_post_heading_size } );
 				this.setState( { upload_image_url: response.spl_upload_image_url } );
-				this.setState( { background_color: response.spl_background_color } );
+				this.setState( { primary_color: response.spl_primary_color } );
 				this.setState( { isApiLoaded: true } );
 
 				for( var i=0; i<1; i++ ) {
@@ -264,10 +264,10 @@ class Spotlight extends Component {
 								isAnswer={ this.state.isAnswer }
 								isSearch = { this.state.isSearch }
 								enable_contact_tab={ this.state.enable_contact_tab }
-								background_color={ this.state.background_color }
+								primary_color={ this.state.primary_color }
 							/>
 
-							<div className={ ( this.state.isAnswer? ! this.state.isSearch?"spl-heading-post-container" : 'spl-heading-search-container' : "spl-heading-form-wrap" ) + ' ' + ( this.state.background_color ) }>
+							<div className={ ( this.state.isAnswer? ! this.state.isSearch?"spl-heading-post-container" : 'spl-heading-search-container' : "spl-heading-form-wrap" ) } style={{ 'background-color': `${(this.state.primary_color)}` }}>
 								{
 									this.state.isAnswer?
 										! this.state.isSearch?
@@ -303,6 +303,7 @@ class Spotlight extends Component {
 												searchResult={ this.state.search_posts }
 												isSearchResult={ this.state.isSearchResult }
 												onClick={ this.handleClick }
+												post_heading_size={ this.state.post_heading_size }
 											/>
 										:
 										<div className="spl-posts-loading-container">
@@ -373,7 +374,7 @@ class Spotlight extends Component {
 								:
 								<ModalForm
 									font_family={ this.state.font_family }
-									background_color={ this.state.background_color }
+									primary_color={ this.state.primary_color }
 								/>
 							}
 							</main>
@@ -381,7 +382,7 @@ class Spotlight extends Component {
 							{
 								this.state.enable_search_box?
 									this.state.isAnswer?
-									<div className={ "spl-search-container " + ( this.state.isFocus? 'is-focussed' : 'not-focussed' ) + ' ' + ( this.state.background_color == 'spl-primary'? 'spl-primary-before' : 'spl-secondary-before' ) }>
+									<div className={ "spl-search-container " + ( this.state.isFocus? 'is-focussed' : 'not-focussed' ) } style={{ '--before-background-color': `${( this.state.primary_color )}` }}>
 										<input type="text" ref={ this.inputText } placeholder="What can we help you with?" className="spl-search-text" onFocus={ this.handleFocus } onBlur={ this.handleBlur } onChange={ this.searchText } style={{ 'font-family': `${(this.state.font_family)}` }}/>
 
 										<div className="spl-search-button-container">
@@ -444,7 +445,7 @@ class Spotlight extends Component {
 						timeout={130}
 						classNames="button"
 					>
-					<button className={ "spl-button " + ( this.state.background_color )} onClick={ this.showModal }>
+					<button className="spl-button" onClick={ this.showModal } style={{ 'background-color': `${( this.state.primary_color )}` }}>
 							<CSSTransition
 							in={ this.state.isModalShow }
 							unmountOnExit
@@ -457,6 +458,7 @@ class Spotlight extends Component {
 								</svg>
 							</span>
 							</CSSTransition>
+
 							<CSSTransition
 							in={ ! this.state.isModalShow  }
 							unmountOnExit

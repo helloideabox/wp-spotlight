@@ -278,7 +278,7 @@ class ModalPost extends Component{
 							}
 
 							<div className="spl-modal-form-submit-wrap">
-								<button className={ "spl-modal-form-submit " + ( this.state.isSuccessMsg? 'not-allowed' : '' ) + ' ' + ( this.props.background_color ) } disabled={ this.state.isSuccessMsg } type="submit" onClick={ this.handleSubmit } style={{ 'font-family': `${(this.props.font_family)}` }}>
+								<button className={ "spl-modal-form-submit " + ( this.state.isSuccessMsg? 'not-allowed' : '' ) } disabled={ this.state.isSuccessMsg } type="submit" onClick={ this.handleSubmit } style={{ 'font-family': `${(this.props.font_family)}`, 'background-color': `${( this.props.primary_color )}` }}>
 									{ __( 'Send a message' ) }
 								</button>
 								

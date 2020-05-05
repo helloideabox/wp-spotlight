@@ -41,7 +41,7 @@ $font_family            = get_option( 'spl_font_family' );
 $post_heading_size      = get_option( 'spl_post_heading_size' );
 $upload_image_url       = get_option( 'spl_upload_image_url' );
 $upload_image_name      = get_option( 'spl_upload_image_name' );
-$background_color       = get_option( 'spl_background_color' );
+$primary_color          = get_option( 'spl_primary_color' );
 
 ?>
 <div class="spl-settings-wrap">
@@ -236,29 +236,24 @@ $background_color       = get_option( 'spl_background_color' );
 					</td>
 				</tr>
 
-				<tr class="spl-background-color">
-					<th scope="row"><?php esc_attr_e( 'Background Color', 'spotlight' ); ?></th>
+				<tr class="spl-primary-color">
+					<th scope="row"><?php esc_attr_e( 'Primary Color', 'spotlight' ); ?></th>
 
 					<td>
 						<label>
 							<input
-								type="radio"
-								name="spl_background_color"
-								value="<?php esc_attr_e( 'spl-primary', 'spotlight' ); ?>"
-								<?php checked( $background_color, 'spl-primary' ); ?>
-							><?php esc_attr_e( 'primary', 'spotlight' ); ?>
-							<input
-								type="radio"
-								name="spl_background_color"
-								value="<?php esc_attr_e( 'spl-secondary', 'spotlight' ); ?>"
-								<?php checked( $background_color, 'spl-secondary' ); ?>
-							><?php esc_attr_e( 'secondary', 'spotlight' ); ?>
-							<p>
-								<i>
-								<?php esc_attr_e( 'Sets the background color/overall color of the plugin( Default: primary ).', 'spotlight' ); ?>
-								</i>
-							</p>
+								type="text"
+								value="<?php echo esc_attr( $primary_color ); ?>"
+								class="spl-primary-color-field"
+								name="spl_primary_color"
+								data-default-color="#fc5d7d"
+							/>
 						</label>
+						<p>
+							<i>
+							<?php esc_attr_e( 'Sets the background color of the plugin( Default: #fc5d7d ).', 'spotlight' ); ?>
+							</i>
+						</p>
 					</td>
 				</tr>
 			</table>
