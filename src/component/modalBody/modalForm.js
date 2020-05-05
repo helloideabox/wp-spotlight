@@ -382,7 +382,7 @@ class ModalPost extends Component{
 									</span>
 
 									<span className="spl-modal-form-submit-response-failed-msg">
-										{ __( 'Please try again.' ) }
+										{ __( 'Please try again Or Check whether you have updated email parameters in plugin settings.' ) }
 									</span>
 								</div>
 						}

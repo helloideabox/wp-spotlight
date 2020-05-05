@@ -33,7 +33,7 @@ unset( $post_types['attachment'] );
 // Getting selected post types from db.
 $selected_post_types = get_option( 'spl_post_types' );
 
-// Getting search box enable value from db.
+// Getting settings value stored in db.
 $enable_search_box      = get_option( 'spl_enable_search_box' );
 $enable_contact_tab     = get_option( 'spl_enable_contact_tab' );
 $enable_number_of_posts = get_option( 'spl_number_of_posts' );
@@ -42,6 +42,10 @@ $post_heading_size      = get_option( 'spl_post_heading_size' );
 $upload_image_url       = get_option( 'spl_upload_image_url' );
 $upload_image_name      = get_option( 'spl_upload_image_name' );
 $primary_color          = get_option( 'spl_primary_color' );
+$from_email             = get_option( 'spl_from_email' );
+$from_email             = get_option( 'spl_from_email' );
+$from_name              = get_option( 'spl_from_name' );
+$send_email             = get_option( 'spl_send_email' );
 
 ?>
 <div class="spl-settings-wrap">
@@ -144,6 +148,64 @@ $primary_color          = get_option( 'spl_primary_color' );
 							<p>
 								<i>
 								<?php esc_attr_e( 'Sets the number of posts to be shown in answers tab( Default: -1 ).', 'spotlight' ); ?>
+								</i>
+							</p>
+						</label>
+					</td>
+				</tr>
+
+				<tr class="spl-from-email">
+					<th scope="row"><?php esc_attr_e( 'From Email', 'spotlight' ); ?></th>
+
+					<td>
+						<label>
+							<input
+								type="email"
+								name="spl_from_email"
+								placeholder="abc@gmail.com"
+								value="<?php echo esc_attr( $from_email ); ?>"
+							>
+							<p>
+								<i>
+								<?php esc_attr_e( 'Uses the email address to send the message.', 'spotlight' ); ?>
+								</i>
+							</p>
+						</label>
+					</td>
+				</tr>
+
+				<tr class="spl-from-name">
+					<th scope="row"><?php esc_attr_e( 'From Name', 'spotlight' ); ?></th>
+
+					<td>
+						<label>
+							<input
+								type="text"
+								name="spl_from_name"
+								value="<?php echo esc_attr( $from_name ); ?>"
+							>
+							<p>
+								<i>
+								<?php esc_attr_e( 'The name attached to the email address to send the message.', 'spotlight' ); ?>
+								</i>
+							</p>
+						</label>
+					</td>
+				</tr>
+
+				<tr class="spl-send-email">
+					<th scope="row"><?php esc_attr_e( 'Send To Email', 'spotlight' ); ?></th>
+
+					<td>
+						<label>
+							<input
+								type="email"
+								name="spl_send_email"
+								value="<?php echo esc_attr( $send_email ); ?>"
+							>
+							<p>
+								<i>
+								<?php esc_attr_e( 'The email address the message is to be send.', 'spotlight' ); ?>
 								</i>
 							</p>
 						</label>

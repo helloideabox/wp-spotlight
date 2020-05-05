@@ -299,6 +299,9 @@ class  Spotlight_Loader {
 		$upload_image_url   = '';
 		$upload_image_name  = '';
 		$primary_color      = '#fc5d7d';
+		$from_email         = '';
+		$from_name          = '';
+		$send_email         = '';
 
 		if ( check_ajax_referer( 'ajax_nonce', 'security' ) ) {
 			if ( isset( $_POST['spl_cpt_support'] ) ) {
@@ -345,6 +348,21 @@ class  Spotlight_Loader {
 
 				$primary_color = sanitize_text_field( wp_unslash( $_POST['spl_primary_color'] ) );
 			}
+
+			if ( isset( $_POST['spl_from_email'] ) ) {
+
+				$from_email = sanitize_text_field( wp_unslash( $_POST['spl_from_email'] ) );
+			}
+
+			if ( isset( $_POST['spl_from_name'] ) ) {
+
+				$from_name = sanitize_text_field( wp_unslash( $_POST['spl_from_name'] ) );
+			}
+
+			if ( isset( $_POST['spl_send_email'] ) ) {
+
+				$send_email = sanitize_text_field( wp_unslash( $_POST['spl_send_email'] ) );
+			}
 		}
 
 		update_option( 'spl_post_types', $query );
@@ -356,6 +374,10 @@ class  Spotlight_Loader {
 		update_option( 'spl_upload_image_url', $upload_image_url );
 		update_option( 'spl_upload_image_name', $upload_image_name );
 		update_option( 'spl_primary_color', $primary_color );
+		update_option( 'spl_from_email', $from_email );
+		update_option( 'spl_from_name', $from_name );
+		update_option( 'spl_send_email', $send_email );
+
 		echo 'success';
 
 		wp_die();
@@ -425,9 +447,12 @@ class  Spotlight_Loader {
 				$query = sanitize_text_field( wp_unslash( $_POST['query'] ) );
 			}
 
-			$to      = 'adarshshah01@gmail.com';
+			$to      = get_option( 'spl_send_email' );
 			$subject = 'Queries or Suggestion Regarding Spotlight';
-			$headers = array( 'From: ' . $name . ' <' . $email . '>' );
+			$headers = array(
+				'From: ' . get_option( 'spl_from_name' ) . ' <' . get_option( 'spl_from_email' ) . '>',
+				'Reply-To: ' . $name . ' <' . $email . '>',
+			);
 
 			if ( wp_mail( $to, $subject, $query, $headers ) ) {
 				echo 'success';
