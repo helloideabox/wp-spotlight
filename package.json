@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "webpack",
+    "start": "webpack -p",
     "watch": "webpack --watch"
   },
   "keywords": [],
@@ -30,6 +30,7 @@
     "html-react-parser": "^0.10.3",
     "react": "^16.13.1",
     "react-addons-css-transition-group": "^15.6.2",
-    "react-dom": "^16.13.1"
+    "react-dom": "^16.13.1",
+    "react-transition-group": "^4.3.0"
   }
 }

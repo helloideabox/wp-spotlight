@@ -265,6 +265,9 @@ button{
 	min-height: 153px;
 	height: 153px;
 	pointer-events: none;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 }
 
 .spl-heading-search-container{
@@ -332,11 +335,10 @@ button{
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		padding-top: 15px;
 
 		.spl-form-heading-avatars{
 			background-size: cover;
-			background-image: url( './images/image1.jpg' );
+			// background-image: url( './images/image1.jpg' );
 			display: block;
 			height: 60px;
 			width: 60px;
@@ -373,6 +375,11 @@ button{
 		font-size: 13px;
 		line-height: 1.5;
 	}
+}
+
+.spl-form-no-avatar{
+	position: relative;
+	top: -17px;
 }
 
 
