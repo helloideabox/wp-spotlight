@@ -70,7 +70,7 @@ class Spotlight extends Component {
 			this.widget = new wp.api.models.Settings();
 
 			this.widget.fetch().then( response => {
-				console.log( response );
+				//console.log( response );
 
 				this.setState( { enable_search_box: response.spl_enable_search_box } );
 				this.setState( { enable_contact_tab: response.spl_enable_contact_tab } );
@@ -238,7 +238,7 @@ class Spotlight extends Component {
 	}
 
 	render() {
-		console.log( this.state );
+		//console.log( this.state );
 		return(
 			this.state.isApiLoaded?
 			<Fragment>
