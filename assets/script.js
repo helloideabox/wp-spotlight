@@ -33,6 +33,7 @@ jQuery( document ).ready( function() {
 			jQuery( '#spl-message' ).fadeOut();
 
 			if( response == 'success' ) {
+				jQuery("html, body").animate({ scrollTop: 0 }, 200);
 				jQuery( '#spl-message' ).fadeIn();
 			}
 		} );
