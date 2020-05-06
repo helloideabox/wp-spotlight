@@ -52,8 +52,8 @@ class  Spotlight_Loader {
 	public function register_script() {
 
 		// Enqueueing build script and styles.
-		wp_enqueue_style( 'spl-react-style', SPOTLIGHT_URL . 'build/admin.css', array( 'wp-components' ), SPOTLIGHT_VERSION, false );
-		wp_enqueue_script( 'spl-react-script', SPOTLIGHT_URL . 'build/admin.js', array( 'wp-components', 'wp-element', 'wp-api', 'wp-i18n' ), SPOTLIGHT_VERSION, true );
+		wp_enqueue_style( 'spl-react-style', SPOTLIGHT_URL . 'build/frontend.css', array( 'wp-components' ), SPOTLIGHT_VERSION, false );
+		wp_enqueue_script( 'spl-react-script', SPOTLIGHT_URL . 'build/frontend.js', array( 'wp-components', 'wp-element', 'wp-api', 'wp-i18n' ), SPOTLIGHT_VERSION, true );
 		wp_localize_script(
 			'spl-react-script',
 			'ajax',
