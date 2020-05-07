@@ -199,7 +199,7 @@ button{
 }
 
 .spl-modal-scroll-container{
-	max-height: 90%;
+	max-height: calc( 100% - 59px );
 	scroll-behavior: smooth;
 	overflow-x: hidden;
 	overflow-y: auto;
@@ -382,8 +382,12 @@ button{
 	top: -17px;
 }
 
+@media screen and (max-width: 400px) {
 
-
+	.spl-modal-container{
+		width: 290px;
+	}
+}
 
 
 
